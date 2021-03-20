@@ -1,6 +1,6 @@
 package chun.project.movieapp.di
 
-import chun.project.movieapp.screen.home.HomeViewModel
+import chun.project.movieapp.screen.home.ui.HomeViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

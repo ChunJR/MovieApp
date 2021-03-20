@@ -1,4 +1,4 @@
-package chun.project.movieapp.screen.home
+package chun.project.movieapp.screen.home.ui
 
 sealed class HomeViewState {
     object Loading: HomeViewState()

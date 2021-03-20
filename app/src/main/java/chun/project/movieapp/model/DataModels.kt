@@ -4,6 +4,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
+data class HomeData(val viewType: Int, var listItem: List<Any>)
+
 @Parcelize
 data class TrendingResponseModel(
     @SerializedName("page") var page: Int,

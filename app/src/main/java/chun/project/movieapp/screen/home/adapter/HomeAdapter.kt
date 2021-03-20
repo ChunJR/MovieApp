@@ -5,55 +5,73 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
 import chun.project.movieapp.base.BaseViewHolder
+import chun.project.movieapp.model.HomeData
 import chun.project.movieapp.model.TrendingModel
-import chun.project.movieapp.model.checkItemsAre
 import chun.project.movieapp.screen.home.`interface`.HomeListener
+import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
 
-class HomeAdapter(private val listener: HomeListener, private val data: MutableList<Any>) :
+class HomeAdapter(private val listener: HomeListener) :
     RecyclerView.Adapter<BaseViewHolder<*>>() {
+
+    private val data: MutableList<HomeData> = arrayListOf()
 
     companion object {
         const val TYPE_TRENDING = 0
-        private val TYPE_TRAILER = 1
-        private val TYPE_REVIEW = 2
+        const val TYPE_CATEGORY = 1
+        const val TYPE_MOVIE = 2
+
+        const val POSITION_TRENDING = 0
+        const val POSITION_CATEGORY = 1
+        const val POSITION_POPULAR = 2
+        const val POSITION_TOP_RATED = 3
+        const val POSITION_UPCOMING = 4
+    }
+
+    init {
+        data.addAll(listOf(
+            HomeData(TYPE_TRENDING, arrayListOf()),
+            HomeData(TYPE_CATEGORY, arrayListOf()),
+            HomeData(TYPE_MOVIE, arrayListOf()),
+            HomeData(TYPE_MOVIE, arrayListOf()),
+            HomeData(TYPE_MOVIE, arrayListOf())
+        ))
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         val context = parent.context
         return when (viewType) {
             TYPE_TRENDING -> {
-                val view =
-                    LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
-
-                val trendingList = data.checkItemsAre<TrendingModel>() ?: return arrayListOf<>()
-                TrendingViewHolder(view, listener, trendingList)
+                val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
+                TrendingViewHolder(context, view, listener)
             }
-//            TYPE_TRAILER -> {
-//                val view = LayoutInflater.from(parent.context).inflate(R.layout.trailer_list_content, parent, false)
-//                TrailerViewHolder(view, listener, data)
-//            }
-//            TYPE_REVIEW -> {
-//                val view = LayoutInflater.from(parent.context).inflate(R.layout.review_list_content, parent, false)
-//                ReviewViewHolder(view, listener, data)
-//            }
+            TYPE_CATEGORY -> {
+                val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
+                TrendingViewHolder(context, view, listener)
+            }
+            TYPE_MOVIE -> {
+                val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
+                TrendingViewHolder(context, view, listener)
+            }
             else -> throw IllegalArgumentException("Invalid view type")
         }
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
-        when (position) {
-            TYPE_TRENDING -> holder.bind(data[position] as List<*>)
-//            is TrailerViewHolder -> holder.bind(element as Trailer)
-//            is ReviewViewHolder -> holder.bind(element as Review)
-            else -> throw IllegalArgumentException()
-        }
+        holder.bind(data[position].listItem)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return position
+        return data[position].viewType
     }
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    fun updateTrendingList(trendingList: List<TrendingModel>?) {
+        trendingList?.let {
+            data[POSITION_TRENDING].listItem = it
+            notifyItemChanged(POSITION_TRENDING)
+        }
     }
 }

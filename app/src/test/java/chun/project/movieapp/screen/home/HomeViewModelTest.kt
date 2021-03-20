@@ -6,6 +6,8 @@ import chun.project.movieapp.util.RxImmediateSchedulerRule
 import chun.project.movieapp.model.TrendingModel
 import chun.project.movieapp.model.TrendingResponseModel
 import chun.project.movieapp.repository.MovieRepo
+import chun.project.movieapp.screen.home.ui.HomeViewModel
+import chun.project.movieapp.screen.home.ui.HomeViewState
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

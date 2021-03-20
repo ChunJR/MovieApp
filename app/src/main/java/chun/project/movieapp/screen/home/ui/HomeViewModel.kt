@@ -1,4 +1,4 @@
-package chun.project.movieapp.screen.home
+package chun.project.movieapp.screen.home.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.sellmair.disposer.Disposer
 import io.sellmair.disposer.disposeBy
-import io.sellmair.disposer.onDestroy
 
 class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
 

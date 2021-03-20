@@ -1,4 +1,4 @@
-package chun.project.movieapp.screen.home
+package chun.project.movieapp.screen.home.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -48,19 +48,13 @@ class HomeFragment : Fragment(), HomeListener {
                 is HomeViewState.Loading -> {
                     showLoading()
                 }
-//                is HomeViewState.Success -> {
-//                    hideLoading()
-//                }
-//                is HomeViewState.Error -> {
-//
-//                }
                 else -> {
                     hideLoading()
                 }
             }
         })
         viewModel.trending.observe(viewLifecycleOwner, {
-            homeAdapter
+            homeAdapter.updateTrendingList(it)
         })
     }
 
@@ -77,7 +71,7 @@ class HomeFragment : Fragment(), HomeListener {
         fun newInstance() = HomeFragment()
     }
 
-    override fun onTrendingClick(trendingModel: TrendingModel, position: Int) {
+    override fun onTrendingClick(trendingModel: TrendingModel) {
         Toast.makeText(requireContext(), "Trending click", Toast.LENGTH_SHORT).show()
     }
 }
