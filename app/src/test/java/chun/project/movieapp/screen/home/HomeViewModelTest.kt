@@ -2,7 +2,7 @@ package chun.project.movieapp.screen.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import chun.project.movieapp.RxImmediateSchedulerRule
+import chun.project.movieapp.util.RxImmediateSchedulerRule
 import chun.project.movieapp.model.TrendingModel
 import chun.project.movieapp.model.TrendingResponseModel
 import chun.project.movieapp.repository.MovieRepo

@@ -1,4 +1,4 @@
-package chun.project.movieapp
+package chun.project.movieapp.util
 
 import io.reactivex.android.plugins.RxAndroidPlugins
 import io.reactivex.plugins.RxJavaPlugins
