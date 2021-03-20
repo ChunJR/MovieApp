@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="refresh_sample_data">Refresh Data</string>
+    <string name="get_sample_data">Get Data</string>
+</resources>
