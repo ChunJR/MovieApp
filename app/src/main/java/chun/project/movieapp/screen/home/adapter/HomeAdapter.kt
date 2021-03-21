@@ -1,17 +1,17 @@
 package chun.project.movieapp.screen.home.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
-import chun.project.movieapp.screen.home.viewholder.HomeViewHolder
 import chun.project.movieapp.model.HomeData
 import chun.project.movieapp.model.TrendingModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
 
 class HomeAdapter(private val listener: HomeListener) :
-    RecyclerView.Adapter<HomeViewHolder<*>>() {
+    RecyclerView.Adapter<HomeAdapter.HomeViewHolder<*>>() {
 
     private val data: MutableList<HomeData> = arrayListOf()
 
@@ -73,5 +73,9 @@ class HomeAdapter(private val listener: HomeListener) :
             data[POSITION_TRENDING].listItem = it
             notifyItemChanged(POSITION_TRENDING)
         }
+    }
+
+    abstract class HomeViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        abstract fun bind(data: List<Any>)
     }
 }

@@ -7,6 +7,14 @@ import kotlinx.android.parcel.Parcelize
 data class HomeData(val viewType: Int, var listItem: List<Any>)
 
 @Parcelize
+data class ConfigResponseModel(
+    @SerializedName("base_url") var base_url: String?,
+    @SerializedName("secure_base_url") var secure_base_url: String?,
+    @SerializedName("backdrop_sizes") var backdrop_sizes: List<String>?,
+    @SerializedName("poster_sizes") var poster_sizes: List<String>?,
+) : Parcelable
+
+@Parcelize
 data class TrendingResponseModel(
     @SerializedName("page") var page: Int,
     @SerializedName("total_pages") var total_pages: Int,
@@ -21,11 +29,5 @@ data class TrendingModel(
     @SerializedName("poster_path") var poster_path: String,
     @SerializedName("backdrop_path") var backdrop_path: String,
 ) : Parcelable
-
-@Suppress("UNCHECKED_CAST")
-inline fun <reified T : Any> List<*>.checkItemsAre() =
-    if (all { it is T })
-        this as List<T>
-    else null
 
 
