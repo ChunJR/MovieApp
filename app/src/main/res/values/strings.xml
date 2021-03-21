@@ -3,4 +3,7 @@
     <string name="refresh_sample_data">Refresh Data</string>
     <string name="get_sample_data">Get Data</string>
     <string name="txt_trending">Trending</string>
+    <string name="txt_search">Search</string>
+    <string name="txt_app_logo">App Logo</string>
+    <string name="txt_account">Account</string>
 </resources>
