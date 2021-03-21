@@ -4,14 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
-import chun.project.movieapp.base.BaseViewHolder
+import chun.project.movieapp.screen.home.viewholder.HomeViewHolder
 import chun.project.movieapp.model.HomeData
 import chun.project.movieapp.model.TrendingModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
 
 class HomeAdapter(private val listener: HomeListener) :
-    RecyclerView.Adapter<BaseViewHolder<*>>() {
+    RecyclerView.Adapter<HomeViewHolder<*>>() {
 
     private val data: MutableList<HomeData> = arrayListOf()
 
@@ -37,7 +37,7 @@ class HomeAdapter(private val listener: HomeListener) :
         ))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder<*> {
         val context = parent.context
         return when (viewType) {
             TYPE_TRENDING -> {
@@ -56,7 +56,7 @@ class HomeAdapter(private val listener: HomeListener) :
         }
     }
 
-    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
+    override fun onBindViewHolder(holder: HomeViewHolder<*>, position: Int) {
         holder.bind(data[position].listItem)
     }
 
