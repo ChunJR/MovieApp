@@ -1,4 +1,4 @@
-package chun.project.movieapp.screen.home.ui
+package chun.project.movieapp.screen.landing.ui
 
 sealed class LandingViewState {
     object Loading: LandingViewState()

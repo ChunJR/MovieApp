@@ -1,22 +1,16 @@
-package chun.project.movieapp.screen.home.ui
+package chun.project.movieapp.screen.landing.ui
 
-import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import chun.project.movieapp.R
-import chun.project.movieapp.databinding.FragmentHomeBinding
 import chun.project.movieapp.databinding.FragmentLandingBinding
 import chun.project.movieapp.model.ConfigResponseModel
-import chun.project.movieapp.model.TrendingModel
-import chun.project.movieapp.screen.home.`interface`.HomeListener
-import chun.project.movieapp.screen.home.adapter.HomeAdapter
+import chun.project.movieapp.screen.MainActivity
+import chun.project.movieapp.screen.home.ui.HomeFragment
 import chun.project.movieapp.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -59,18 +53,22 @@ class LandingFragment : Fragment() {
     private fun handleData(configResponse: ConfigResponseModel?, widthOfScreen: Int) {
         configResponse?.let { config ->
             if (config.base_url?.isNotEmpty() == true) {
-                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_URL] = config.base_url!!
+                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_URL] =
+                    config.base_url!!
             }
             if (config.secure_base_url?.isNotEmpty() == true) {
-                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL] = config.secure_base_url!!
+                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL] =
+                    config.secure_base_url!!
             }
             if (config.poster_sizes?.isNotEmpty() == true) {
                 val posterSize = getWidthSize(config.poster_sizes!!, widthOfScreen)
-                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_POSTER_SIZE] = posterSize
+                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_POSTER_SIZE] =
+                    posterSize
             }
             if (config.backdrop_sizes?.isNotEmpty() == true) {
                 val backdropSize = getWidthSize(config.backdrop_sizes!!, widthOfScreen)
-                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_BACKDROP_SIZE] = backdropSize
+                requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_BACKDROP_SIZE] =
+                    backdropSize
             }
         }
         moveToHomeScreen()
@@ -98,10 +96,15 @@ class LandingFragment : Fragment() {
     }
 
     private fun moveToHomeScreen() {
-        TODO("Not yet implemented")
+        Handler().postDelayed({
+            val homeFragment = HomeFragment.newInstance()
+            (activity as MainActivity).setupFragment(homeFragment)
+        }, DELAY_TIME)
     }
 
     companion object {
+        private const val DELAY_TIME = 2000L
+
         @JvmStatic
         fun newInstance() = LandingFragment()
     }

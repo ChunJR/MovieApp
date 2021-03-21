@@ -2,20 +2,20 @@ package chun.project.movieapp.screen
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import chun.project.movieapp.R
-import chun.project.movieapp.screen.home.ui.LandingFragment
-import chun.project.movieapp.util.replaceFragmentInActivity
+import chun.project.movieapp.screen.landing.ui.LandingFragment
+import chun.project.movieapp.util.replaceFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupViewFragment()
+        setupFragment(LandingFragment.newInstance())
     }
 
-    private fun setupViewFragment() {
-        supportFragmentManager.findFragmentById(R.id.container)
-            ?: replaceFragmentInActivity(LandingFragment.newInstance(), R.id.container)
+    fun setupFragment(fragment: Fragment) {
+        replaceFragment(fragment, R.id.container)
     }
 }

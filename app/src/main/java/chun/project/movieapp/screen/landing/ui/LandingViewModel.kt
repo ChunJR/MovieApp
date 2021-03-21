@@ -1,18 +1,14 @@
-package chun.project.movieapp.screen.home.ui
+package chun.project.movieapp.screen.landing.ui
 
-import android.util.DisplayMetrics
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import chun.project.movieapp.model.ConfigResponseModel
-import chun.project.movieapp.model.TrendingModel
-import chun.project.movieapp.model.TrendingResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.sellmair.disposer.Disposer
 import io.sellmair.disposer.disposeBy
-import io.sellmair.disposer.onDestroy
 
 class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
 
