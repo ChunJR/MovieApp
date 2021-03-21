@@ -3,8 +3,8 @@ package chun.project.movieapp.screen.home
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import chun.project.movieapp.util.RxImmediateSchedulerRule
-import chun.project.movieapp.model.TrendingModel
-import chun.project.movieapp.model.TrendingResponseModel
+import chun.project.movieapp.model.MovieModel
+import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import chun.project.movieapp.screen.home.ui.HomeViewState
 import chun.project.movieapp.screen.home.ui.HomeViewModel
@@ -34,7 +34,7 @@ class HomeViewModelTest {
     lateinit var stateObserver: Observer<HomeViewState>
 
     @MockK(relaxed = true)
-    lateinit var trendingObserver: Observer<List<TrendingModel>>
+    lateinit var trendingObserver: Observer<List<MovieModel>>
 
     private lateinit var viewModel: HomeViewModel
 
@@ -54,7 +54,7 @@ class HomeViewModelTest {
 
     @Test
     fun getTrendingList_success() {
-        val trendingResponse = TrendingResponseModel(
+        val trendingResponse = MovieResponseModel(
             1,
             1000,
             10000,
@@ -97,10 +97,10 @@ class HomeViewModelTest {
         }
     }
 
-    private fun trendingMockData(): List<TrendingModel> {
+    private fun trendingMockData(): List<MovieModel> {
         return arrayListOf(
-            TrendingModel(1, "abc", "/fsafsa", "/fhsaufhsa"),
-            TrendingModel(2, "xyz", "/xyz", "/xyz")
+            MovieModel(1, "abc", "/fsafsa", "/fhsaufhsa"),
+            MovieModel(2, "xyz", "/xyz", "/xyz")
         )
     }
 

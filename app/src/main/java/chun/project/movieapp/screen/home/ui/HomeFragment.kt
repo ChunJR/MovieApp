@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentHomeBinding
-import chun.project.movieapp.model.TrendingModel
+import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -35,7 +35,7 @@ class HomeFragment : Fragment(), HomeListener {
         viewModel.addEvents()
     }
 
-    override fun onTrendingClick(trendingModel: TrendingModel) {
+    override fun onTrendingClick(MovieModel: MovieModel) {
         Toast.makeText(requireContext(), "Trending click", Toast.LENGTH_SHORT).show()
     }
 
@@ -46,16 +46,6 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun observeDataChange() {
-        viewModel.state.observe(viewLifecycleOwner, {
-            when (it) {
-                is HomeViewState.Loading -> {
-                    showLoading()
-                }
-                else -> {
-                    hideLoading()
-                }
-            }
-        })
         viewModel.trending.observe(viewLifecycleOwner, {
             homeAdapter.updateTrendingList(it)
         })

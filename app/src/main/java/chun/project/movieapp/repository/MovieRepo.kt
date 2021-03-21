@@ -1,7 +1,7 @@
 package chun.project.movieapp.repository
 
 import chun.project.movieapp.model.ConfigResponseModel
-import chun.project.movieapp.model.TrendingResponseModel
+import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.util.Constant
 import com.google.gson.Gson
 import com.google.gson.JsonParser
@@ -10,7 +10,10 @@ import okhttp3.ResponseBody
 
 interface MovieRepo {
     fun getConfiguration(): Single<ConfigResponseModel>
-    fun getTrendingList(): Single<TrendingResponseModel>
+    fun getTrendingList(page: Int): Single<MovieResponseModel>
+    fun getPopularList(page: Int): Single<MovieResponseModel>
+    fun getTopRatedList(page: Int): Single<MovieResponseModel>
+    fun getUpcomingList(page: Int): Single<MovieResponseModel>
 }
 
 class MovieRepoImpl(private val service: MovieService): MovieRepo {
@@ -21,10 +24,31 @@ class MovieRepoImpl(private val service: MovieService): MovieRepo {
             }
     }
 
-    override fun getTrendingList(): Single<TrendingResponseModel> {
-        return service.getTrendingList("all", "day", Constant.API_KEY)
+    override fun getTrendingList(page: Int): Single<MovieResponseModel> {
+        return service.getTrendingList("all", "day", Constant.API_KEY, page)
                 .map { responseBody ->
-                    MovieServiceFun.parseTrendingData(responseBody)
+                    MovieServiceFun.parseMoviesData(responseBody)
+                }
+    }
+
+    override fun getPopularList(page: Int): Single<MovieResponseModel> {
+        return service.getPopularMovies(Constant.API_KEY, page)
+                .map { responseBody ->
+                    MovieServiceFun.parseMoviesData(responseBody)
+                }
+    }
+
+    override fun getTopRatedList(page: Int): Single<MovieResponseModel> {
+        return service.getTopRatedMovies(Constant.API_KEY, page)
+                .map { responseBody ->
+                    MovieServiceFun.parseMoviesData(responseBody)
+                }
+    }
+
+    override fun getUpcomingList(page: Int): Single<MovieResponseModel> {
+        return service.getUpcomingMovies(Constant.API_KEY, page)
+                .map { responseBody ->
+                    MovieServiceFun.parseMoviesData(responseBody)
                 }
     }
 }
@@ -43,12 +67,12 @@ object MovieServiceFun {
         }
     }
 
-    fun parseTrendingData(responseBody: ResponseBody): TrendingResponseModel? {
+    fun parseMoviesData(responseBody: ResponseBody): MovieResponseModel? {
         val jsonAsString = responseBody.string()
         val jsonObject = JsonParser().parse(jsonAsString).asJsonObject
 
         return if (!jsonObject.isJsonNull) {
-            Gson().fromJson(jsonObject.toString(), TrendingResponseModel::class.java)
+            Gson().fromJson(jsonObject.toString(), MovieResponseModel::class.java)
         } else {
             null
         }

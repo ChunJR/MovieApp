@@ -15,15 +15,15 @@ data class ConfigResponseModel(
 ) : Parcelable
 
 @Parcelize
-data class TrendingResponseModel(
+data class MovieResponseModel(
     @SerializedName("page") var page: Int,
     @SerializedName("total_pages") var total_pages: Int,
     @SerializedName("total_results") var total_results: Int,
-    @SerializedName("results") var results: List<TrendingModel>,
+    @SerializedName("results") var results: List<MovieModel>,
 ) : Parcelable
 
 @Parcelize
-data class TrendingModel(
+data class MovieModel(
     @SerializedName("id") var id: Int,
     @SerializedName("title") var title: String,
     @SerializedName("poster_path") var poster_path: String,

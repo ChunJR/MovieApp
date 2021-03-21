@@ -3,8 +3,8 @@ package chun.project.movieapp.screen.home.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import chun.project.movieapp.model.TrendingModel
-import chun.project.movieapp.model.TrendingResponseModel
+import chun.project.movieapp.model.MovieModel
+import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,9 +18,8 @@ class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
     private val _state = MutableLiveData<HomeViewState>()
     val state: LiveData<HomeViewState> get() = _state
 
-    private val _trending = MutableLiveData<List<TrendingModel>>()
-    val trending: LiveData<List<TrendingModel>> get() = _trending
-
+    private val _trending = MutableLiveData<List<MovieModel>>()
+    val trending: LiveData<List<MovieModel>> get() = _trending
     var trendingPage = 1
 
     override fun onCleared() {
@@ -29,14 +28,13 @@ class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
     }
 
     fun addEvents() {
-        movieRepo.getTrendingList()
+        movieRepo.getTrendingList(trendingPage)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _state.value = HomeViewState.Loading }
             .subscribe(
-                { trending ->
+                { movieResponse ->
                     _state.value = HomeViewState.Success
-                    handleData(trending)
+                    handleMovieData(movieResponse, _trending)
                 },
                 { error ->
                     error.message?.let {
@@ -46,8 +44,10 @@ class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
             ).disposeBy(disposer)
     }
 
-    private fun handleData(trending: TrendingResponseModel) {
-        _trending.value = trending.results
-        trendingPage = trending.page
+    private fun handleMovieData(movieResponse: MovieResponseModel?,
+                                _movies: MutableLiveData<List<MovieModel>>) {
+        movieResponse?.let {
+            _movies.value = it.results
+        }
     }
 }

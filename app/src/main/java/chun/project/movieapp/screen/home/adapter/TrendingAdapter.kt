@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.databinding.ItemTrendingMovieBinding
-import chun.project.movieapp.model.TrendingModel
+import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.IMG_TRENDING_HEIGHT
 import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.IMG_TRENDING_WIDTH
@@ -17,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 
 class TrendingAdapter(
     private val context: Context,
-    private val trendingList: List<TrendingModel>,
+    private val trendingList: List<MovieModel>,
     private val listener: HomeListener
 ) :
     RecyclerView.Adapter<TrendingAdapter.ViewHolder>() {

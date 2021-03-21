@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
 import chun.project.movieapp.model.HomeData
-import chun.project.movieapp.model.TrendingModel
+import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
 
@@ -68,7 +68,7 @@ class HomeAdapter(private val listener: HomeListener) :
         return data.size
     }
 
-    fun updateTrendingList(trendingList: List<TrendingModel>?) {
+    fun updateTrendingList(trendingList: List<MovieModel>?) {
         trendingList?.let {
             data[POSITION_TRENDING].listItem = it
             notifyItemChanged(POSITION_TRENDING)

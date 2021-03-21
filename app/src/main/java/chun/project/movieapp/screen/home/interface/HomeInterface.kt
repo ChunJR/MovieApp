@@ -1,7 +1,7 @@
 package chun.project.movieapp.screen.home.`interface`
 
-import chun.project.movieapp.model.TrendingModel
+import chun.project.movieapp.model.MovieModel
 
 interface HomeListener {
-    fun onTrendingClick(trendingModel: TrendingModel)
+    fun onTrendingClick(MovieModel: MovieModel)
 }
