@@ -33,10 +33,6 @@ class HomeFragment : Fragment(), HomeListener {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeDataChange()
-//        viewModel.addEvents()
-        viewModel.getFavoriteMovies().subscribe {
-            homeAdapter.submitData(lifecycle, it)
-        }
     }
 
     override fun onTrendingClick(MovieModel: MovieModel) {
@@ -44,15 +40,15 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun initView() {
-        homeAdapter = HomeAdapterV2(this)
+        homeAdapter = HomeAdapterV2(lifecycle, this)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         binding?.recyclerView?.adapter = homeAdapter
     }
 
     private fun observeDataChange() {
-        viewModel.trending.observe(viewLifecycleOwner, {
-            homeAdapter.updateTrendingList(it)
-        })
+        viewModel.getFavoriteMovies().subscribe {
+            homeAdapter.submitData(it)
+        }
     }
 
     private fun showLoading() {

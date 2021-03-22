@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class HomeData(val viewType: Int, var listItem: List<Any>)
-data class HomeDataV2(val viewType: Int, var listItem: PagingData<Any>)
+data class HomeDataV2(val viewType: Int, var listItem: PagingData<MovieModel>)
 
 @Parcelize
 data class ConfigResponseModel(

@@ -21,13 +21,6 @@ class HomeViewModelV2(private val repository: GetMoviesRxRepository): ViewModel(
 
     private val disposer = Disposer()
 
-    private val _state = MutableLiveData<HomeViewState>()
-    val state: LiveData<HomeViewState> get() = _state
-
-    private val _trending = MutableLiveData<List<MovieModel>>()
-    val trending: LiveData<List<MovieModel>> get() = _trending
-    var trendingPage = 1
-
     override fun onCleared() {
         super.onCleared()
         disposer.dispose()

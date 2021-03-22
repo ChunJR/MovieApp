@@ -15,7 +15,7 @@ import chun.project.movieapp.screen.home.ui.HomeViewModelV2
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolderV2
 
-class HomeAdapterV2(private val listener: HomeListener) :
+class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: HomeListener) :
     RecyclerView.Adapter<HomeAdapterV2.HomeViewModelV2<*>>() {
 
     private val data: MutableList<HomeDataV2> = arrayListOf()
@@ -34,11 +34,11 @@ class HomeAdapterV2(private val listener: HomeListener) :
 
     init {
         data.addAll(listOf(
-            HomeDataV2(TYPE_TRENDING, arrayListOf()),
-            HomeDataV2(TYPE_CATEGORY, arrayListOf()),
-            HomeDataV2(TYPE_MOVIE, arrayListOf()),
-            HomeDataV2(TYPE_MOVIE, arrayListOf()),
-            HomeDataV2(TYPE_MOVIE, arrayListOf())
+            HomeDataV2(TYPE_TRENDING, PagingData.empty()),
+            HomeDataV2(TYPE_CATEGORY, PagingData.empty()),
+            HomeDataV2(TYPE_MOVIE, PagingData.empty()),
+            HomeDataV2(TYPE_MOVIE, PagingData.empty()),
+            HomeDataV2(TYPE_MOVIE, PagingData.empty())
         )
         )
     }
@@ -48,15 +48,15 @@ class HomeAdapterV2(private val listener: HomeListener) :
         return when (viewType) {
             TYPE_TRENDING -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
-                TrendingViewHolderV2(context, view, listener)
+                TrendingViewHolderV2(context, view, listener, lifecycle)
             }
             TYPE_CATEGORY -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
-                TrendingViewHolderV2(context, view, listener)
+                TrendingViewHolderV2(context, view, listener, lifecycle)
             }
             TYPE_MOVIE -> {
                 val view = LayoutInflater.from(context).inflate(R.layout.item_trending, parent, false)
-                TrendingViewHolderV2(context, view, listener)
+                TrendingViewHolderV2(context, view, listener, lifecycle)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
@@ -74,14 +74,14 @@ class HomeAdapterV2(private val listener: HomeListener) :
         return data.size
     }
 
-    fun updateTrendingList(trendingList: List<MovieModel>?) {
-        trendingList?.let {
-            data[POSITION_TRENDING].listItem = it
-            notifyItemChanged(POSITION_TRENDING)
-        }
-    }
+//    fun updateTrendingList(trendingList: List<MovieModel>?) {
+//        trendingList?.let {
+//            data[POSITION_TRENDING].listItem = it
+//            notifyItemChanged(POSITION_TRENDING)
+//        }
+//    }
 
-    fun submitData(lifecycle: Lifecycle, trendingList: PagingData<MovieModel>?) {
+    fun submitData(trendingList: PagingData<MovieModel>?) {
         trendingList?.let {
             data[POSITION_TRENDING].listItem = it
             notifyItemChanged(POSITION_TRENDING)
@@ -89,6 +89,6 @@ class HomeAdapterV2(private val listener: HomeListener) :
     }
 
     abstract class HomeViewModelV2<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        abstract fun bind(data: List<Any>)
+        abstract fun bind(data: PagingData<MovieModel>)
     }
 }
