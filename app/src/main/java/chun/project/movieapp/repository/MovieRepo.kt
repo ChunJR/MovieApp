@@ -1,10 +1,16 @@
 package chun.project.movieapp.repository
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.flowable
 import chun.project.movieapp.model.ConfigResponseModel
+import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.util.Constant
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import io.reactivex.Flowable
 import io.reactivex.Single
 import okhttp3.ResponseBody
 
@@ -76,5 +82,24 @@ object MovieServiceFun {
         } else {
             null
         }
+    }
+}
+
+interface GetMoviesRxRepository {
+    fun getMovies(): Flowable<PagingData<MovieModel>>
+}
+
+class GetMoviesRxRepositoryImpl(private val pagingSource: MoviePagingSource): GetMoviesRxRepository {
+
+    override fun getMovies(): Flowable<PagingData<MovieModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
+                maxSize = 30,
+                prefetchDistance = 5,
+                initialLoadSize = 40),
+            pagingSourceFactory = { pagingSource }
+        ).flowable
     }
 }

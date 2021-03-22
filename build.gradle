@@ -30,6 +30,7 @@ buildscript {
         def rxjava_version = '2.2.13'
         def rxandroid_version = '2.1.1'
         def diposer_version = '2.0.0'
+        def paging_version = "3.0.0-beta02"
 
         libraries = [
                 // Kotlin standard library
@@ -66,7 +67,12 @@ buildscript {
                 "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
 
                 // Disposer
-                "io.sellmair:disposer:$diposer_version"
+                "io.sellmair:disposer:$diposer_version",
+
+                // Paging 3
+                "androidx.paging:paging-runtime:$paging_version",
+                // optional - RxJava2 support
+                "androidx.paging:paging-rxjava2-ktx:$paging_version",
         ]
 
         testLibraries = [
