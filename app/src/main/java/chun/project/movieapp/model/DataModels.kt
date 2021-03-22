@@ -1,10 +1,12 @@
 package chun.project.movieapp.model
 
 import android.os.Parcelable
+import androidx.paging.PagingData
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class HomeData(val viewType: Int, var listItem: List<Any>)
+data class HomeDataV2(val viewType: Int, var listItem: PagingData<Any>)
 
 @Parcelize
 data class ConfigResponseModel(

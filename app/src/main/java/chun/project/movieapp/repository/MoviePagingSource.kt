@@ -31,7 +31,7 @@ class MoviePagingSource(
             .onErrorReturn { LoadResult.Error(it) }
     }
 
-    private fun toLoadResult(data: MovieResponseModel?, page: Int): LoadResult<Int, MovieModel> {
+    private fun toLoadResult(data: MovieResponseModel, page: Int): LoadResult<Int, MovieModel> {
         return LoadResult.Page(
             data = data.results,
             prevKey = if (page == 1) null else page - 1,

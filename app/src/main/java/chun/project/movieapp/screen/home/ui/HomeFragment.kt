@@ -10,14 +10,15 @@ import chun.project.movieapp.databinding.FragmentHomeBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
+import chun.project.movieapp.screen.home.adapter.HomeAdapterV2
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), HomeListener {
 
-    private val viewModel: HomeViewModel by viewModel()
+    private val viewModel: HomeViewModelV2 by viewModel()
     private var binding: FragmentHomeBinding? = null
 
-    private lateinit var homeAdapter: HomeAdapter
+    private lateinit var homeAdapter: HomeAdapterV2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +33,10 @@ class HomeFragment : Fragment(), HomeListener {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeDataChange()
-        viewModel.addEvents()
+//        viewModel.addEvents()
+        viewModel.getFavoriteMovies().subscribe {
+            homeAdapter.submitData(lifecycle, it)
+        }
     }
 
     override fun onTrendingClick(MovieModel: MovieModel) {
@@ -40,7 +44,7 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun initView() {
-        homeAdapter = HomeAdapter(this)
+        homeAdapter = HomeAdapterV2(this)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         binding?.recyclerView?.adapter = homeAdapter
     }
