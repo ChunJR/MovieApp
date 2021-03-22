@@ -24,10 +24,10 @@ data class MovieResponseModel(
 
 @Parcelize
 data class MovieModel(
-    @SerializedName("id") var id: Int,
-    @SerializedName("title") var title: String,
-    @SerializedName("poster_path") var poster_path: String,
-    @SerializedName("backdrop_path") var backdrop_path: String,
+    @SerializedName("id") var id: Int = -1,
+    @SerializedName("title") var title: String = "",
+    @SerializedName("poster_path") var poster_path: String = "",
+    @SerializedName("backdrop_path") var backdrop_path: String = "",
 ) : Parcelable
 
 

@@ -39,6 +39,10 @@ class HomeFragment : Fragment(), HomeListener {
         Toast.makeText(requireContext(), "Trending click", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onLoadMore(viewType: Int) {
+        Toast.makeText(requireContext(), "viewType: $viewType", Toast.LENGTH_SHORT).show()
+    }
+
     private fun initView() {
         homeAdapter = HomeAdapter(this)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
@@ -47,7 +51,9 @@ class HomeFragment : Fragment(), HomeListener {
 
     private fun observeDataChange() {
         viewModel.trending.observe(viewLifecycleOwner, {
-            homeAdapter.updateTrendingList(it)
+            val arraylist = it.toMutableList()
+            arraylist.add(MovieModel())
+            homeAdapter.updateTrendingList(arraylist)
         })
     }
 

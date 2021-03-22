@@ -4,4 +4,5 @@ import chun.project.movieapp.model.MovieModel
 
 interface HomeListener {
     fun onTrendingClick(MovieModel: MovieModel)
+    fun onLoadMore(viewType: Int)
 }

@@ -4,41 +4,51 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import chun.project.movieapp.databinding.ItemTrendingMovieBinding
+import chun.project.movieapp.R
+import chun.project.movieapp.base.BaseViewHolder
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
-import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.IMG_TRENDING_HEIGHT
-import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.IMG_TRENDING_WIDTH
-import chun.project.movieapp.util.Constant
-import chun.project.movieapp.util.myAppPreferences
-import chun.project.movieapp.util.px
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import chun.project.movieapp.screen.home.viewholder.LoadingViewHolder
+import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
+
 
 class TrendingAdapter(
-    private val context: Context,
     private val trendingList: List<MovieModel>,
-    private val listener: HomeListener
+    private val listener: HomeListener,
+    private val viewType: Int
 ) :
-    RecyclerView.Adapter<TrendingAdapter.ViewHolder>() {
+    RecyclerView.Adapter<BaseViewHolder<*>>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingAdapter.ViewHolder {
-        val binding =
-            ItemTrendingMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(binding)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
+        val context = parent.context
+        return when (viewType) {
+            TYPE_ITEM -> {
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.item_trending_movie, parent, false)
+                TrendingViewHolder(context, view, listener)
+            }
+            TYPE_LOADING -> {
+                val view =
+                    LayoutInflater.from(context).inflate(R.layout.item_loading, parent, false)
+                LoadingViewHolder(view, listener)
+            }
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val trending = trendingList[position]
-        val backdropUrl = getBackdropPath(trending.backdrop_path)
+    override fun onBindViewHolder(holder: BaseViewHolder<*>, position: Int) {
+        if (trendingList[position].id != -1) {
+            holder.bind(trendingList[position])
+        } else {
+            holder.bind(viewType)
+        }
+    }
 
-        Glide.with(context)
-            .load(backdropUrl)
-            .apply(RequestOptions().override(IMG_TRENDING_WIDTH.px, IMG_TRENDING_HEIGHT.px))
-            .into(holder.binding.imageView)
-
-        holder.itemView.setOnClickListener {
-            listener.onTrendingClick(trending)
+    override fun getItemViewType(position: Int): Int {
+        if (trendingList[position].id != -1) {
+            return TYPE_ITEM
+        } else {
+            return TYPE_LOADING
         }
     }
 
@@ -46,19 +56,8 @@ class TrendingAdapter(
         return trendingList.size
     }
 
-    private fun getBackdropPath(backdropPath: String): String {
-        val baseUrl = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL,
-            Constant.BASE_IMAGE_URL
-        )
-        val imageSize = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_BACKDROP_SIZE,
-            Constant.DEFAULT_IMAGE_SIZE
-        )
-
-        return baseUrl + imageSize + backdropPath
+    companion object {
+        const val TYPE_ITEM = 0
+        const val TYPE_LOADING = 1
     }
-
-    inner class ViewHolder(val binding: ItemTrendingMovieBinding) :
-        RecyclerView.ViewHolder(binding.root)
 }
