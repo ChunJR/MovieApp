@@ -37,13 +37,15 @@ class MovieAdapter(
             val posterUrl = getPosterPath(movie.poster_path)
             Glide.with(context)
                 .load(posterUrl)
-                .into(holder.binding.imageView)
+                .into(holder.binding.ivMovie)
 
             val layoutParams = FrameLayout.LayoutParams(
                 HomeFragment.IMG_MOVIES_WIDTH.px,
                 HomeFragment.IMG_MOVIES_HEIGHT.px
             )
-            holder.binding.imageView.layoutParams = layoutParams
+            holder.binding.ivMovie.layoutParams = layoutParams
+
+            holder.binding.tvMovieName.text = movie.title
 
             holder.itemView.setOnClickListener {
                 listener.onMovieClick(movie)
