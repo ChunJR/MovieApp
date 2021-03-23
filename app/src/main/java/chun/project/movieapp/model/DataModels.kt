@@ -5,8 +5,9 @@ import androidx.paging.PagingData
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
-data class HomeData(val viewType: Int, var listItem: List<Any>)
-data class HomeDataV2(val viewType: Int, var listItem: Pair<PagingData<MovieModel>, List<Genres>>)
+data class HomeDataV2(val viewType: Int,
+                      var listItem: Pair<PagingData<MovieModel>, List<Genres>>,
+                      var isRefresh: Boolean? = false)
 
 @Parcelize
 data class ConfigResponseModel(

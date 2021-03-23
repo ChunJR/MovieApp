@@ -12,4 +12,7 @@
     <string name="txt_category">Category</string>
     <string name="txt_genres">Genres</string>
     <string name="txt_more_details">More Details</string>
+    <string name="txt_error">Error</string>
+    <string name="txt_cancel">Cancel</string>
+    <string name="txt_retry">Retry</string>
 </resources>

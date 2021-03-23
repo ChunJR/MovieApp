@@ -37,6 +37,7 @@ class HomeFragment : Fragment(), HomeListener {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeDataChange()
+        fetchData()
     }
 
     override fun onMovieClick(MovieModel: MovieModel) {
@@ -47,10 +48,23 @@ class HomeFragment : Fragment(), HomeListener {
         homeAdapter = HomeAdapter(lifecycle, this)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         binding?.recyclerView?.adapter = homeAdapter
+
+        binding?.swipeRefresh?.setOnRefreshListener {
+            fetchData()
+        }
+    }
+
+    private fun observeDataChange() {
+        viewModel.categories.observe(viewLifecycleOwner, {
+            if (binding?.swipeRefresh?.isRefreshing == true) {
+                binding?.swipeRefresh?.isRefreshing = false
+            }
+            homeAdapter.updateCategories(POSITION_CATEGORY, it)
+        })
     }
 
     @SuppressLint("CheckResult")
-    private fun observeDataChange() {
+    private fun fetchData() {
         viewModel.getTrendingMovies().subscribe {
             homeAdapter.submitData(POSITION_TRENDING, it)
         }
@@ -63,9 +77,6 @@ class HomeFragment : Fragment(), HomeListener {
         viewModel.getMovies("upcoming").subscribe {
             homeAdapter.submitData(POSITION_UPCOMING, it)
         }
-        viewModel.categories.observe(viewLifecycleOwner, {
-            homeAdapter.updateCategories(POSITION_CATEGORY, it)
-        })
         viewModel.getCategories()
     }
 

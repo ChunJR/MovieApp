@@ -100,6 +100,13 @@ class HomeAdapter(private val lifecycle: Lifecycle, private val listener: HomeLi
         }
     }
 
+    fun onRefreshData() {
+        data.forEach {
+            it.isRefresh = true
+        }
+        notifyDataSetChanged()
+    }
+
     abstract class HomeViewModelV2<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
         abstract fun bind(viewType: Int, data: Pair<PagingData<MovieModel>, List<Genres>>)
     }

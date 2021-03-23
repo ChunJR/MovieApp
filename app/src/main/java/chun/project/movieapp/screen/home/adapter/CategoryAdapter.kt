@@ -18,7 +18,7 @@ import java.util.*
 
 
 class CategoryAdapter(
-    private val categoryList: List<Genres>,
+    private var categoryList: List<Genres>,
     private val listener: HomeListener
 ) : RecyclerView.Adapter<CategoryAdapter.ViewHolder>() {
 
@@ -46,6 +46,11 @@ class CategoryAdapter(
 
     override fun getItemCount(): Int {
         return categoryList.size
+    }
+
+    fun updateDataList(categoryList: List<Genres>) {
+        this.categoryList = categoryList
+        notifyDataSetChanged()
     }
 
     private fun getRandomColor(): Int {

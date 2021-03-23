@@ -21,10 +21,17 @@ class CategoryViewHolder(
 ) : HomeAdapter.HomeViewModelV2<List<MovieModel>>(view) {
 
     private val recyclerView = view.recyclerView
+    private var adapter: CategoryAdapter? = null
 
     override fun bind(viewType: Int, data: Pair<PagingData<MovieModel>, List<Genres>>) {
-        val adapter = CategoryAdapter(data.second, listener)
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = adapter
+        adapter?.let {
+            it.updateDataList(data.second)
+            recyclerView.scrollToPosition(0)
+        } ?: run {
+            adapter = CategoryAdapter(data.second, listener)
+            recyclerView.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerView.adapter = adapter
+        }
     }
 }
