@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.databinding.ItemCategoryBinding
@@ -32,17 +33,15 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = categoryList[position]
 
-        holder.binding.textView.text = category.name
-
-        holder.binding.cardView.setCardBackgroundColor(getRandomColor())
-
-        val layoutParams = LinearLayout.LayoutParams(
+        val layoutParams = FrameLayout.LayoutParams(
             CATEGORY_WIDTH.px,
             CATEGORY_HEIGHT.px
         )
-        layoutParams.setMargins(10, 20, 0, 20)
 
-        holder.binding.cardView.layoutParams = layoutParams
+        holder.binding.textView.layoutParams = layoutParams
+        holder.binding.textView.text = category.name
+
+        holder.binding.cardView.setCardBackgroundColor(getRandomColor())
     }
 
     override fun getItemCount(): Int {

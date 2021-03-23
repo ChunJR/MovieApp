@@ -3,6 +3,7 @@ package chun.project.movieapp.screen.home.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -34,16 +35,15 @@ class TrendingAdapter(
         val trending = getItem(position)
         trending?.let {
             val backdropUrl = getBackdropPath(trending.backdrop_path)
-
             Glide.with(context)
                 .load(backdropUrl)
-                .apply(
-                    RequestOptions().override(
-                        HomeFragment.IMG_TRENDING_WIDTH.px,
-                        HomeFragment.IMG_TRENDING_HEIGHT.px
-                    )
-                )
                 .into(holder.binding.imageView)
+
+            val layoutParams = FrameLayout.LayoutParams(
+                HomeFragment.IMG_TRENDING_WIDTH.px,
+                HomeFragment.IMG_TRENDING_HEIGHT.px
+            )
+            holder.binding.imageView.layoutParams = layoutParams
 
             holder.itemView.setOnClickListener {
                 listener.onMovieClick(trending)

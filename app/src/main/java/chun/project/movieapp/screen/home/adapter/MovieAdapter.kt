@@ -3,9 +3,11 @@ package chun.project.movieapp.screen.home.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import chun.project.movieapp.databinding.ItemMovieBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
@@ -14,7 +16,6 @@ import chun.project.movieapp.util.Constant
 import chun.project.movieapp.util.myAppPreferences
 import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 class MovieAdapter(
     private val listener: HomeListener
@@ -34,16 +35,15 @@ class MovieAdapter(
         val movie = getItem(position)
         movie?.let {
             val posterUrl = getPosterPath(movie.poster_path)
-
             Glide.with(context)
                 .load(posterUrl)
-                .apply(
-                    RequestOptions().override(
-                        HomeFragment.IMG_MOVIES_WIDTH.px,
-                        HomeFragment.IMG_MOVIES_HEIGHT.px
-                    )
-                )
                 .into(holder.binding.imageView)
+
+            val layoutParams = FrameLayout.LayoutParams(
+                HomeFragment.IMG_MOVIES_WIDTH.px,
+                HomeFragment.IMG_MOVIES_HEIGHT.px
+            )
+            holder.binding.imageView.layoutParams = layoutParams
 
             holder.itemView.setOnClickListener {
                 listener.onMovieClick(movie)
@@ -63,6 +63,14 @@ class MovieAdapter(
 
         return baseUrl + imageSize + backdropPath
     }
+
+//    private fun showProgress(holder: ViewHolder) {
+//        holder.binding.progressBar.visibility = View.VISIBLE
+//    }
+//
+//    private fun hideProgress(holder: ViewHolder) {
+//        holder.binding.progressBar.visibility = View.GONE
+//    }
 
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<MovieModel>() {
