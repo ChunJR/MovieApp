@@ -5,11 +5,9 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.databinding.ItemCategoryBinding
 import chun.project.movieapp.model.Genres
-import chun.project.movieapp.screen.home.*
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.CATEGORY_HEIGHT
 import chun.project.movieapp.screen.home.ui.HomeFragment.Companion.CATEGORY_WIDTH

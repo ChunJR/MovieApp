@@ -1,6 +1,5 @@
 package chun.project.movieapp.screen.home.viewholder
 
-import android.app.AlertDialog
 import android.content.Context
 import android.view.View
 import androidx.lifecycle.Lifecycle

@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.flowable
 import chun.project.movieapp.model.ConfigResponseModel
-import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.paging.MoviePagingSource
@@ -19,12 +18,12 @@ import okhttp3.ResponseBody
 
 interface MovieRepo {
     fun getConfiguration(): Single<ConfigResponseModel>
-    fun getTrendingMovies(): Flowable<PagingData<MovieModel>>
     fun getCategories(): Single<MovieModel>
+    fun getTrendingMovies(): Flowable<PagingData<MovieModel>>
     fun getMovies(type: String): Flowable<PagingData<MovieModel>>
 }
 
-class MovieRepoImpl(private val service: MovieService): MovieRepo {
+class MovieRepoImpl(private val service: MovieService) : MovieRepo {
     override fun getConfiguration(): Single<ConfigResponseModel> {
         return service.getConfiguration(Constant.API_KEY)
             .map { responseBody ->
@@ -46,7 +45,8 @@ class MovieRepoImpl(private val service: MovieService): MovieRepo {
                 enablePlaceholders = true,
                 maxSize = 30,
                 prefetchDistance = 5,
-                initialLoadSize = 40),
+                initialLoadSize = 40
+            ),
             pagingSourceFactory = { TrendingPagingSource(service) }
         ).flowable
     }
@@ -58,7 +58,8 @@ class MovieRepoImpl(private val service: MovieService): MovieRepo {
                 enablePlaceholders = true,
                 maxSize = 30,
                 prefetchDistance = 5,
-                initialLoadSize = 40),
+                initialLoadSize = 40
+            ),
             pagingSourceFactory = { MoviePagingSource(type, service) }
         ).flowable
     }

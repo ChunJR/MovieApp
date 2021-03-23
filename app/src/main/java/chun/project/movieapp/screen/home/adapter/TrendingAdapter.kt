@@ -15,7 +15,6 @@ import chun.project.movieapp.util.Constant
 import chun.project.movieapp.util.myAppPreferences
 import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 
 class TrendingAdapter(
     private val listener: HomeListener

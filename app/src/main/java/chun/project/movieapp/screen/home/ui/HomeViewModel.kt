@@ -8,7 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.rxjava2.cachedIn
 import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.MovieModel
-import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 import io.sellmair.disposer.Disposer
 import io.sellmair.disposer.disposeBy
 
-class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
+class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
 
     private val disposer = Disposer()
 
@@ -62,8 +61,10 @@ class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
             ).disposeBy(disposer)
     }
 
-    private fun handleMovieData(movieResponse: MovieModel?,
-                                _categories: MutableLiveData<List<Genres>>) {
+    private fun handleMovieData(
+        movieResponse: MovieModel?,
+        _categories: MutableLiveData<List<Genres>>
+    ) {
         movieResponse?.let {
             _categories.value = it.genresList
         }

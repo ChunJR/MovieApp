@@ -38,13 +38,14 @@ class HomeAdapter(private val lifecycle: Lifecycle, private val listener: HomeLi
             arrayListOf()
         )
 
-        data.addAll(listOf(
-            HomeDataV2(TYPE_TRENDING, emptyObject),
-            HomeDataV2(TYPE_CATEGORY, emptyObject),
-            HomeDataV2(TYPE_MOVIE, emptyObject),
-            HomeDataV2(TYPE_MOVIE, emptyObject),
-            HomeDataV2(TYPE_MOVIE, emptyObject)
-        )
+        data.addAll(
+            listOf(
+                HomeDataV2(TYPE_TRENDING, emptyObject),
+                HomeDataV2(TYPE_CATEGORY, emptyObject),
+                HomeDataV2(TYPE_MOVIE, emptyObject),
+                HomeDataV2(TYPE_MOVIE, emptyObject),
+                HomeDataV2(TYPE_MOVIE, emptyObject)
+            )
         )
     }
 
@@ -52,15 +53,18 @@ class HomeAdapter(private val lifecycle: Lifecycle, private val listener: HomeLi
         val context = parent.context
         return when (viewType) {
             TYPE_TRENDING -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.viewholder_trending, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.viewholder_trending, parent, false)
                 TrendingViewHolder(context, view, listener, lifecycle)
             }
             TYPE_CATEGORY -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.viewholder_category, parent, false)
+                val view = LayoutInflater.from(context)
+                    .inflate(R.layout.viewholder_category, parent, false)
                 CategoryViewHolder(context, view, listener, lifecycle)
             }
             TYPE_MOVIE -> {
-                val view = LayoutInflater.from(context).inflate(R.layout.viewholder_movie, parent, false)
+                val view =
+                    LayoutInflater.from(context).inflate(R.layout.viewholder_movie, parent, false)
                 MovieViewHolder(context, view, listener, lifecycle)
             }
             else -> throw IllegalArgumentException("Invalid view type")
@@ -89,6 +93,7 @@ class HomeAdapter(private val lifecycle: Lifecycle, private val listener: HomeLi
             notifyItemChanged(position)
         }
     }
+
     fun updateCategories(position: Int, genresList: List<Genres>?) {
         genresList?.let {
             val listObject = Pair<PagingData<MovieModel>, List<Genres>>(

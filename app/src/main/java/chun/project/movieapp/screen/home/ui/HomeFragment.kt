@@ -68,13 +68,13 @@ class HomeFragment : Fragment(), HomeListener {
         viewModel.getTrendingMovies().subscribe {
             homeAdapter.submitData(POSITION_TRENDING, it)
         }
-        viewModel.getMovies("popular").subscribe {
+        viewModel.getMovies(TYPE_POPULAR).subscribe {
             homeAdapter.submitData(POSITION_POPULAR, it)
         }
-        viewModel.getMovies("top_rated").subscribe {
+        viewModel.getMovies(TYPE_TOP_RATED).subscribe {
             homeAdapter.submitData(POSITION_TOP_RATED, it)
         }
-        viewModel.getMovies("upcoming").subscribe {
+        viewModel.getMovies(TYPE_UPCOMING).subscribe {
             homeAdapter.submitData(POSITION_UPCOMING, it)
         }
         viewModel.getCategories()
@@ -97,6 +97,10 @@ class HomeFragment : Fragment(), HomeListener {
 
         const val CATEGORY_WIDTH = 140
         const val CATEGORY_HEIGHT = 75
+
+        private const val TYPE_POPULAR = "popular"
+        private const val TYPE_TOP_RATED = "top_rated"
+        private const val TYPE_UPCOMING = "upcoming"
 
         @JvmStatic
         fun newInstance() = HomeFragment()

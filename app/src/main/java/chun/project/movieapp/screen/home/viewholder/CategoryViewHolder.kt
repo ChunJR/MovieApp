@@ -10,7 +10,6 @@ import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.CategoryAdapter
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
-import chun.project.movieapp.screen.home.adapter.TrendingAdapter
 import kotlinx.android.synthetic.main.viewholder_trending.view.*
 
 class CategoryViewHolder(
