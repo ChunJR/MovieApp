@@ -7,12 +7,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
-import chun.project.movieapp.model.HomeData
 import chun.project.movieapp.model.HomeDataV2
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
-import chun.project.movieapp.screen.home.ui.HomeViewModelV2
-import chun.project.movieapp.screen.home.viewholder.TrendingViewHolder
+//import chun.project.movieapp.screen.home.ui.HomeViewModelV2
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolderV2
 
 class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: HomeListener) :

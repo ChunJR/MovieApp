@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import chun.project.movieapp.databinding.ItemTrendingMovieBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener

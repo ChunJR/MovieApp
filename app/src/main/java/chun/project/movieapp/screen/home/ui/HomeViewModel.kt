@@ -3,9 +3,13 @@ package chun.project.movieapp.screen.home.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.sellmair.disposer.Disposer
@@ -27,27 +31,12 @@ class HomeViewModel(private val movieRepo: MovieRepo): ViewModel() {
         disposer.dispose()
     }
 
-    fun addEvents() {
-        movieRepo.getTrendingList(trendingPage)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { movieResponse ->
-                    _state.value = HomeViewState.Success
-                    handleMovieData(movieResponse, _trending)
-                },
-                { error ->
-                    error.message?.let {
-                        _state.value = HomeViewState.Error(it)
-                    }
-                }
-            ).disposeBy(disposer)
+
+    fun getFavoriteMovies(): Flowable<PagingData<MovieModel>> {
+        return movieRepo
+            .getMovies()
+            .cachedIn(viewModelScope)
+            .disposeBy(disposer)
     }
 
-    private fun handleMovieData(movieResponse: MovieResponseModel?,
-                                _movies: MutableLiveData<List<MovieModel>>) {
-        movieResponse?.let {
-            _movies.value = it.results
-        }
-    }
 }

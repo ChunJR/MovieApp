@@ -7,7 +7,6 @@ import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import chun.project.movieapp.screen.home.ui.HomeViewState
-import chun.project.movieapp.screen.home.ui.HomeViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

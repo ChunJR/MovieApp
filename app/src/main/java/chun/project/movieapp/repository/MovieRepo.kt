@@ -20,6 +20,8 @@ interface MovieRepo {
     fun getPopularList(page: Int): Single<MovieResponseModel>
     fun getTopRatedList(page: Int): Single<MovieResponseModel>
     fun getUpcomingList(page: Int): Single<MovieResponseModel>
+
+    fun getMovies(): Flowable<PagingData<MovieModel>>
 }
 
 class MovieRepoImpl(private val service: MovieService): MovieRepo {
@@ -57,6 +59,18 @@ class MovieRepoImpl(private val service: MovieService): MovieRepo {
                     MovieServiceFun.parseMoviesData(responseBody)
                 }
     }
+
+    override fun getMovies(): Flowable<PagingData<MovieModel>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 20,
+                enablePlaceholders = true,
+                maxSize = 30,
+                prefetchDistance = 5,
+                initialLoadSize = 40),
+            pagingSourceFactory = { MoviePagingSource(service) }
+        ).flowable
+    }
 }
 
 object MovieServiceFun {
@@ -82,24 +96,5 @@ object MovieServiceFun {
         } else {
             null
         }
-    }
-}
-
-interface GetMoviesRxRepository {
-    fun getMovies(): Flowable<PagingData<MovieModel>>
-}
-
-class GetMoviesRxRepositoryImpl(private val pagingSource: MoviePagingSource): GetMoviesRxRepository {
-
-    override fun getMovies(): Flowable<PagingData<MovieModel>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = true,
-                maxSize = 30,
-                prefetchDistance = 5,
-                initialLoadSize = 40),
-            pagingSourceFactory = { pagingSource }
-        ).flowable
     }
 }

@@ -30,6 +30,13 @@ data class MovieModel(
     @SerializedName("title") var title: String,
     @SerializedName("poster_path") var poster_path: String,
     @SerializedName("backdrop_path") var backdrop_path: String,
+    @SerializedName("genres") var genresList: List<Genres>,
+) : Parcelable
+
+@Parcelize
+data class Genres(
+    @SerializedName("id") var id: Int,
+    @SerializedName("name") var name: String
 ) : Parcelable
 
 
