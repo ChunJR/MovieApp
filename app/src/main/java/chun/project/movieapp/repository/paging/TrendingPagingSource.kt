@@ -1,17 +1,16 @@
-package chun.project.movieapp.repository
+package chun.project.movieapp.repository.paging
 
-import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.model.MovieResponseModel
+import chun.project.movieapp.repository.MovieService
+import chun.project.movieapp.repository.MovieServiceFun
 import chun.project.movieapp.util.Constant
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import retrofit2.HttpException
-import java.io.IOException
 
-class MoviePagingSource(
+class TrendingPagingSource(
     private val service: MovieService
 ) : RxPagingSource<Int, MovieModel>() {
 
@@ -40,6 +39,6 @@ class MoviePagingSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, MovieModel>): Int? {
-        TODO("Not yet implemented")
+        return state.anchorPosition
     }
 }

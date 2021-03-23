@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import chun.project.movieapp.databinding.ItemTrendingMovieBinding
+import chun.project.movieapp.databinding.ItemMovieBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.ui.HomeFragment
@@ -16,41 +16,48 @@ import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 
-class TrendingAdapterV2(
-    private val context: Context,
+class MovieAdapter(
     private val listener: HomeListener
-) : PagingDataAdapter<MovieModel, TrendingAdapterV2.ViewHolder>(
+) : PagingDataAdapter<MovieModel, MovieAdapter.ViewHolder>(
     COMPARATOR
 ) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrendingAdapterV2.ViewHolder {
-        val binding = ItemTrendingMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    private lateinit var context: Context
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieAdapter.ViewHolder {
+        this.context = parent.context
+        val binding = ItemMovieBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: TrendingAdapterV2.ViewHolder, position: Int) {
-        val trending = getItem(position)
-        trending?.let {
-            val backdropUrl = getBackdropPath(trending.backdrop_path)
+    override fun onBindViewHolder(holder: MovieAdapter.ViewHolder, position: Int) {
+        val movie = getItem(position)
+        movie?.let {
+            val posterUrl = getPosterPath(movie.poster_path)
 
             Glide.with(context)
-                .load(backdropUrl)
-                .apply(RequestOptions().override(HomeFragment.IMG_TRENDING_WIDTH.px, HomeFragment.IMG_TRENDING_HEIGHT.px))
+                .load(posterUrl)
+                .apply(
+                    RequestOptions().override(
+                        HomeFragment.IMG_MOVIES_WIDTH.px,
+                        HomeFragment.IMG_MOVIES_HEIGHT.px
+                    )
+                )
                 .into(holder.binding.imageView)
 
             holder.itemView.setOnClickListener {
-                listener.onTrendingClick(trending)
+                listener.onMovieClick(movie)
             }
         }
     }
 
-    private fun getBackdropPath(backdropPath: String): String {
+    private fun getPosterPath(backdropPath: String): String {
         val baseUrl = context.myAppPreferences.getString(
             Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL,
             Constant.BASE_IMAGE_URL
         )
         val imageSize = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_BACKDROP_SIZE,
+            Constant.SHARED_PREFERENCE_IMAGE_POSTER_SIZE,
             Constant.DEFAULT_IMAGE_SIZE
         )
 
@@ -69,6 +76,6 @@ class TrendingAdapterV2(
         }
     }
 
-    inner class ViewHolder(val binding: ItemTrendingMovieBinding) :
+    inner class ViewHolder(val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

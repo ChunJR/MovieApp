@@ -6,11 +6,15 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentHomeBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
-import chun.project.movieapp.screen.home.adapter.HomeAdapterV2
+import chun.project.movieapp.screen.home.adapter.HomeAdapter
+import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_CATEGORY
+import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_POPULAR
+import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_TOP_RATED
+import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_TRENDING
+import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_UPCOMING
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), HomeListener {
@@ -18,7 +22,7 @@ class HomeFragment : Fragment(), HomeListener {
     private val viewModel: HomeViewModel by viewModel()
     private var binding: FragmentHomeBinding? = null
 
-    private lateinit var homeAdapter: HomeAdapterV2
+    private lateinit var homeAdapter: HomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,21 +39,34 @@ class HomeFragment : Fragment(), HomeListener {
         observeDataChange()
     }
 
-    override fun onTrendingClick(MovieModel: MovieModel) {
+    override fun onMovieClick(MovieModel: MovieModel) {
         Toast.makeText(requireContext(), "Trending click", Toast.LENGTH_SHORT).show()
     }
 
     private fun initView() {
-        homeAdapter = HomeAdapterV2(lifecycle, this)
+        homeAdapter = HomeAdapter(lifecycle, this)
         binding?.recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         binding?.recyclerView?.adapter = homeAdapter
     }
 
     @SuppressLint("CheckResult")
     private fun observeDataChange() {
-        viewModel.getFavoriteMovies().subscribe {
-            homeAdapter.submitData(it)
+        viewModel.getTrendingMovies().subscribe {
+            homeAdapter.submitData(POSITION_TRENDING, it)
         }
+        viewModel.getMovies("popular").subscribe {
+            homeAdapter.submitData(POSITION_POPULAR, it)
+        }
+        viewModel.getMovies("top_rated").subscribe {
+            homeAdapter.submitData(POSITION_TOP_RATED, it)
+        }
+        viewModel.getMovies("upcoming").subscribe {
+            homeAdapter.submitData(POSITION_UPCOMING, it)
+        }
+        viewModel.categories.observe(viewLifecycleOwner, {
+            homeAdapter.updateCategories(POSITION_CATEGORY, it)
+        })
+        viewModel.getCategories()
     }
 
     private fun showLoading() {
@@ -63,6 +80,12 @@ class HomeFragment : Fragment(), HomeListener {
     companion object {
         const val IMG_TRENDING_WIDTH = 300
         const val IMG_TRENDING_HEIGHT = 160
+
+        const val IMG_MOVIES_WIDTH = 140
+        const val IMG_MOVIES_HEIGHT = 210
+
+        const val CATEGORY_WIDTH = 140
+        const val CATEGORY_HEIGHT = 75
 
         @JvmStatic
         fun newInstance() = HomeFragment()

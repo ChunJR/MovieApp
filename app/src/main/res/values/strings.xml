@@ -6,4 +6,9 @@
     <string name="txt_search">Search</string>
     <string name="txt_app_logo">App Logo</string>
     <string name="txt_account">Account</string>
+    <string name="txt_popular">Popular</string>
+    <string name="txt_top_rated">Top Rated</string>
+    <string name="txt_upcoming">Upcoming</string>
+    <string name="txt_category">Category</string>
+    <string name="txt_genres">Genres</string>
 </resources>

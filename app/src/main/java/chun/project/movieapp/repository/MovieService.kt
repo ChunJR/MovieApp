@@ -17,15 +17,11 @@ interface MovieService {
                         @Query("api_key") apiKey: String,
                         @Query("page") page: Int): Single<ResponseBody>
 
-    @GET("movie/popular")
-    fun getPopularMovies(@Query("api_key") apiKey: String,
-                          @Query("page") page: Int): Single<ResponseBody>
+    @GET("genre/movie/list")
+    fun getCategories(@Query("api_key") apiKey: String): Single<ResponseBody>
 
-    @GET("movie/top_rated")
-    fun getTopRatedMovies(@Query("api_key") apiKey: String,
-                          @Query("page") page: Int): Single<ResponseBody>
-
-    @GET("movie/upcoming")
-    fun getUpcomingMovies(@Query("api_key") apiKey: String,
-                          @Query("page") page: Int): Single<ResponseBody>
+    @GET("movie/{type}")
+    fun getMovies(@Path("type") type: String, // popular, top_rated, upcoming
+                         @Query("api_key") apiKey: String,
+                         @Query("page") page: Int): Single<ResponseBody>
 }
