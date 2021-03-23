@@ -10,7 +10,6 @@ import chun.project.movieapp.R
 import chun.project.movieapp.model.HomeDataV2
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
-//import chun.project.movieapp.screen.home.ui.HomeViewModelV2
 import chun.project.movieapp.screen.home.viewholder.TrendingViewHolderV2
 
 class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: HomeListener) :
@@ -41,7 +40,7 @@ class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: Home
         )
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapterV2.HomeViewModelV2<*> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewModelV2<*> {
         val context = parent.context
         return when (viewType) {
             TYPE_TRENDING -> {
@@ -60,7 +59,7 @@ class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: Home
         }
     }
 
-    override fun onBindViewHolder(holder: HomeAdapterV2.HomeViewModelV2<*>, position: Int) {
+    override fun onBindViewHolder(holder: HomeViewModelV2<*>, position: Int) {
         holder.bind(data[position].listItem)
     }
 
@@ -71,13 +70,6 @@ class HomeAdapterV2(private val lifecycle: Lifecycle, private val listener: Home
     override fun getItemCount(): Int {
         return data.size
     }
-
-//    fun updateTrendingList(trendingList: List<MovieModel>?) {
-//        trendingList?.let {
-//            data[POSITION_TRENDING].listItem = it
-//            notifyItemChanged(POSITION_TRENDING)
-//        }
-//    }
 
     fun submitData(trendingList: PagingData<MovieModel>?) {
         trendingList?.let {
