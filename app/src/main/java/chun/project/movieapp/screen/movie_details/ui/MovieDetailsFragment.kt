@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentMovieDetailsBinding
 import chun.project.movieapp.model.MovieModel
+import chun.project.movieapp.util.Utils.formatReleaseDate
 import chun.project.movieapp.util.Utils.getBackdropPath
 import chun.project.movieapp.util.Utils.getPosterPath
 import chun.project.movieapp.util.px
@@ -21,9 +22,6 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        requireActivity().actionBar?.hide()
-
         savedInstanceState?.let { bundle ->
             getBundleData(bundle)
         } ?: run {
@@ -31,6 +29,11 @@ class MovieDetailsFragment : Fragment() {
                 getBundleData(bundle)
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(BUNDLE_MOVIE_MODEL, movieModel)
     }
 
     override fun onCreateView(
@@ -44,9 +47,13 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
 
+    private fun initView() {
         initBackButton()
         loadMovieImage()
+        initMovieInfo()
     }
 
     private fun initBackButton() {
@@ -57,7 +64,11 @@ class MovieDetailsFragment : Fragment() {
 
     private fun loadMovieImage() {
         binding?.let { binding ->
-            val backdropUrl = getBackdropPath(requireContext(), movieModel?.backdrop_path, getOriginal = true)
+            val backdropUrl = getBackdropPath(
+                requireContext(),
+                movieModel?.backdrop_path,
+                getOriginal = true
+            )
             Glide.with(requireContext())
                 .load(backdropUrl)
                 .placeholder(R.drawable.bg_fake_view)
@@ -71,9 +82,24 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(BUNDLE_MOVIE_MODEL, movieModel)
+    private fun initMovieInfo() {
+        movieModel?.rating?.let {
+            val star = it / 2
+            binding?.tvRating?.text = star.toString()
+            binding?.ratingBar?.rating = star
+        }
+
+        movieModel?.release_date?.let {
+            binding?.tvReleaseDate?.text = formatReleaseDate(it)
+        }
+
+        movieModel?.title?.let {
+            binding?.tvTitle?.text = it
+        }
+
+        movieModel?.overview?.let {
+            binding?.tvOverview?.text = it
+        }
     }
 
     private fun getBundleData(bundle: Bundle) {

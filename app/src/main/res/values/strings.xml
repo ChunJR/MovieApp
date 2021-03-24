@@ -19,4 +19,5 @@
     <string name="collapsing_toolbar">Collapsing Toolbar</string>
     <string name="txt_movie_poster">Movie Poster</string>
     <string name="txt_back">Back</string>
+    <string name="txt_play">Play</string>
 </resources>

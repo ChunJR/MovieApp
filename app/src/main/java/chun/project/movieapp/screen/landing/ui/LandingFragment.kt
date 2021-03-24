@@ -1,5 +1,6 @@
 package chun.project.movieapp.screen.landing.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
@@ -39,7 +40,14 @@ class LandingFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner, {
             when (it) {
                 is LandingViewState.Error -> {
-                    moveToHomeScreen()
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.txt_error)
+                        .setMessage(it.message)
+                        .setPositiveButton(R.string.txt_retry) { dialog, _ ->
+                            viewModel.getConfiguration()
+                            dialog.dismiss()
+                        }
+                        .show()
                 }
                 else -> {
                 }

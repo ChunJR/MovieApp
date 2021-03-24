@@ -1,6 +1,9 @@
 package chun.project.movieapp.util
 
+import android.annotation.SuppressLint
 import android.content.Context
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utils {
 
@@ -35,6 +38,18 @@ object Utils {
                 Constant.DEFAULT_IMAGE_SIZE
             )
             baseUrl + imageSize + backdropPath
+        }
+    }
+
+    fun formatReleaseDate(releaseDate: String): String {
+        var sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date: Date? = sdf.parse(releaseDate)
+
+        date?.let {
+            sdf = SimpleDateFormat("MMMM yyyy")
+            return sdf.format(date)
+        } ?: run {
+            return ""
         }
     }
 }
