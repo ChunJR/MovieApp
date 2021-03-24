@@ -50,14 +50,14 @@ class MovieDetailsFragment : Fragment() {
                 }
             }
 
-            movieModel?.poster_path?.let {
-                val backdropUrl = getPosterPath(requireContext(), it)
-                movieModel?.let {
-                    Glide.with(requireContext())
-                        .load(backdropUrl)
-                        .into(binding.ivMoviePoster)
-                }
-            }
+//            movieModel?.poster_path?.let {
+//                val posterUrl = getPosterPath(requireContext(), it)
+//                movieModel?.let {
+//                    Glide.with(requireContext())
+//                        .load(posterUrl)
+//                        .into(binding.ivMoviePoster)
+//                }
+//            }
         }
     }
 
