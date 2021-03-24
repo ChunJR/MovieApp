@@ -76,7 +76,7 @@ class LandingFragment : Fragment() {
     }
 
     private fun getWidthSize(sizeList: List<String>, widthOfScreen: Int): String {
-        for (pos in sizeList.indices.reversed() - 1) {
+        for (pos in sizeList.indices.reversed()) {
             val size = sizeList[pos]
             val result = size.filter { it.isDigit() }
 

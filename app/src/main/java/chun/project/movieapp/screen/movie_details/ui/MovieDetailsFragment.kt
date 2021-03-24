@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentMovieDetailsBinding
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.util.Utils.getBackdropPath
 import chun.project.movieapp.util.Utils.getPosterPath
+import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 
 class MovieDetailsFragment : Fragment() {
 
@@ -18,6 +21,9 @@ class MovieDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requireActivity().actionBar?.hide()
+
         savedInstanceState?.let { bundle ->
             getBundleData(bundle)
         } ?: run {
@@ -39,25 +45,29 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBackButton()
+        loadMovieImage()
+    }
+
+    private fun initBackButton() {
+        binding?.ivBack?.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
+    }
+
+    private fun loadMovieImage() {
         binding?.let { binding ->
+            val backdropUrl = getBackdropPath(requireContext(), movieModel?.backdrop_path, getOriginal = true)
+            Glide.with(requireContext())
+                .load(backdropUrl)
+                .placeholder(R.drawable.bg_fake_view)
+                .into(binding.ivMovieBackdrop)
 
-            movieModel?.backdrop_path?.let {
-                val backdropUrl = getBackdropPath(requireContext(), it)
-                movieModel?.let {
-                    Glide.with(requireContext())
-                        .load(backdropUrl)
-                        .into(binding.ivMovieBackdrop)
-                }
-            }
-
-//            movieModel?.poster_path?.let {
-//                val posterUrl = getPosterPath(requireContext(), it)
-//                movieModel?.let {
-//                    Glide.with(requireContext())
-//                        .load(posterUrl)
-//                        .into(binding.ivMoviePoster)
-//                }
-//            }
+            val posterUrl = getPosterPath(requireContext(), movieModel?.poster_path)
+            Glide.with(requireContext())
+                .load(posterUrl)
+                .apply(RequestOptions().override(IMG_POSTER_WIDTH.px, IMG_POSTER_HEIGHT.px))
+                .into(binding.ivMoviePoster)
         }
     }
 
@@ -72,6 +82,9 @@ class MovieDetailsFragment : Fragment() {
 
     companion object {
         private const val BUNDLE_MOVIE_MODEL = "BUNDLE_MOVIE_MODEL"
+
+        private const val IMG_POSTER_WIDTH = 120
+        private const val IMG_POSTER_HEIGHT = 180
 
         fun newInstance(movie: MovieModel) = MovieDetailsFragment().apply {
             val bundle = Bundle().apply {
