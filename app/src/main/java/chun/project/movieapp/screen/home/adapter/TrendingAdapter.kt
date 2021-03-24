@@ -12,6 +12,7 @@ import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.ui.HomeFragment
 import chun.project.movieapp.util.Constant
+import chun.project.movieapp.util.Utils.getBackdropPath
 import chun.project.movieapp.util.myAppPreferences
 import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
@@ -33,7 +34,7 @@ class TrendingAdapter(
     override fun onBindViewHolder(holder: TrendingAdapter.ViewHolder, position: Int) {
         val trending = getItem(position)
         trending?.let {
-            val backdropUrl = getBackdropPath(trending.backdrop_path)
+            val backdropUrl = getBackdropPath(context, trending.backdrop_path)
             Glide.with(context)
                 .load(backdropUrl)
                 .into(holder.binding.imageView)
@@ -48,19 +49,6 @@ class TrendingAdapter(
                 listener.onMovieClick(trending)
             }
         }
-    }
-
-    private fun getBackdropPath(backdropPath: String): String {
-        val baseUrl = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL,
-            Constant.BASE_IMAGE_URL
-        )
-        val imageSize = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_BACKDROP_SIZE,
-            Constant.DEFAULT_IMAGE_SIZE
-        )
-
-        return baseUrl + imageSize + backdropPath
     }
 
     companion object {

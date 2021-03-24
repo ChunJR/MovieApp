@@ -1,13 +1,17 @@
 package chun.project.movieapp.screen.home.ui
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.os.Bundle
-import android.view.*
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentHomeBinding
 import chun.project.movieapp.model.MovieModel
+import chun.project.movieapp.screen.MainActivity
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
 import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_CATEGORY
@@ -15,6 +19,8 @@ import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_
 import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_TOP_RATED
 import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_TRENDING
 import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_UPCOMING
+import chun.project.movieapp.screen.movie_details.ui.MovieDetailsFragment
+import chun.project.movieapp.util.addFragmentToBackStack
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment(), HomeListener {
@@ -40,8 +46,10 @@ class HomeFragment : Fragment(), HomeListener {
         fetchData()
     }
 
-    override fun onMovieClick(MovieModel: MovieModel) {
-        Toast.makeText(requireContext(), "Trending click", Toast.LENGTH_SHORT).show()
+    override fun onMovieClick(movie: MovieModel) {
+        movie.id.let {
+            viewModel.getMovieDetails(it)
+        }
     }
 
     private fun initView() {
@@ -55,11 +63,38 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun observeDataChange() {
+        viewModel.state.observe(viewLifecycleOwner, {
+            when (it) {
+                is HomeViewState.Loading -> {
+                    showLoading()
+                }
+                is HomeViewState.Error -> {
+                    hideLoading()
+                    AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.txt_error)
+                        .setMessage(it.message)
+                        .setPositiveButton(R.string.txt_ok) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+                else -> {
+                    hideLoading()
+                }
+            }
+        })
         viewModel.categories.observe(viewLifecycleOwner, {
             if (binding?.swipeRefresh?.isRefreshing == true) {
                 binding?.swipeRefresh?.isRefreshing = false
             }
             homeAdapter.updateCategories(POSITION_CATEGORY, it)
+        })
+        viewModel.movieModel.observe(viewLifecycleOwner, { movie ->
+            val detailsFragment = MovieDetailsFragment.newInstance(movie)
+            (requireActivity() as MainActivity).addFragmentToBackStack(
+                detailsFragment,
+                R.id.container
+            )
         })
     }
 

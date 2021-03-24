@@ -12,6 +12,7 @@ import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.ui.HomeFragment
 import chun.project.movieapp.util.Constant
+import chun.project.movieapp.util.Utils.getPosterPath
 import chun.project.movieapp.util.myAppPreferences
 import chun.project.movieapp.util.px
 import com.bumptech.glide.Glide
@@ -33,7 +34,7 @@ class MovieAdapter(
     override fun onBindViewHolder(holder: MovieAdapter.ViewHolder, position: Int) {
         val movie = getItem(position)
         movie?.let {
-            val posterUrl = getPosterPath(movie.poster_path)
+            val posterUrl = getPosterPath(context, movie.poster_path)
             Glide.with(context)
                 .load(posterUrl)
                 .into(holder.binding.ivMovie)
@@ -51,27 +52,6 @@ class MovieAdapter(
             }
         }
     }
-
-    private fun getPosterPath(backdropPath: String): String {
-        val baseUrl = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_SECURE_URL,
-            Constant.BASE_IMAGE_URL
-        )
-        val imageSize = context.myAppPreferences.getString(
-            Constant.SHARED_PREFERENCE_IMAGE_POSTER_SIZE,
-            Constant.DEFAULT_IMAGE_SIZE
-        )
-
-        return baseUrl + imageSize + backdropPath
-    }
-
-//    private fun showProgress(holder: ViewHolder) {
-//        holder.binding.progressBar.visibility = View.VISIBLE
-//    }
-//
-//    private fun hideProgress(holder: ViewHolder) {
-//        holder.binding.progressBar.visibility = View.GONE
-//    }
 
     companion object {
         private val COMPARATOR = object : DiffUtil.ItemCallback<MovieModel>() {

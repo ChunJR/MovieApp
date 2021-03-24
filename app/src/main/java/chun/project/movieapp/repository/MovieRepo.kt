@@ -19,6 +19,7 @@ import okhttp3.ResponseBody
 interface MovieRepo {
     fun getConfiguration(): Single<ConfigResponseModel>
     fun getCategories(): Single<MovieModel>
+    fun getMovieDetails(movieId: Int): Single<MovieModel>
     fun getTrendingMovies(): Flowable<PagingData<MovieModel>>
     fun getMovies(type: String): Flowable<PagingData<MovieModel>>
 }
@@ -34,7 +35,14 @@ class MovieRepoImpl(private val service: MovieService) : MovieRepo {
     override fun getCategories(): Single<MovieModel> {
         return service.getCategories(Constant.API_KEY)
             .map { responseBody ->
-                MovieServiceFun.parseGenresData(responseBody)
+                MovieServiceFun.parseMovieDetailsData(responseBody)
+            }
+    }
+
+    override fun getMovieDetails(movieId: Int): Single<MovieModel> {
+        return service.getMovieDetails(movieId, Constant.API_KEY)
+            .map { responseBody ->
+                MovieServiceFun.parseMovieDetailsData(responseBody)
             }
     }
 
@@ -90,7 +98,7 @@ object MovieServiceFun {
         }
     }
 
-    fun parseGenresData(responseBody: ResponseBody): MovieModel? {
+    fun parseMovieDetailsData(responseBody: ResponseBody): MovieModel? {
         val jsonAsString = responseBody.string()
         val jsonObject = JsonParser().parse(jsonAsString).asJsonObject
 

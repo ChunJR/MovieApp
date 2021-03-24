@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentLandingBinding
 import chun.project.movieapp.model.ConfigResponseModel
 import chun.project.movieapp.screen.MainActivity
@@ -98,7 +99,7 @@ class LandingFragment : Fragment() {
     private fun moveToHomeScreen() {
         Handler().postDelayed({
             val homeFragment = HomeFragment.newInstance()
-            (activity as MainActivity).setupFragment(homeFragment)
+            (requireActivity() as MainActivity).replaceFragment(homeFragment, R.id.container)
         }, DELAY_TIME)
     }
 

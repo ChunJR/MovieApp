@@ -24,4 +24,8 @@ interface MovieService {
     fun getMovies(@Path("type") type: String, // popular, top_rated, upcoming
                          @Query("api_key") apiKey: String,
                          @Query("page") page: Int): Single<ResponseBody>
+
+    @GET("movie/{movie_id}")
+    fun getMovieDetails(@Path("movie_id") id: Int,
+                         @Query("api_key") apiKey: String): Single<ResponseBody>
 }

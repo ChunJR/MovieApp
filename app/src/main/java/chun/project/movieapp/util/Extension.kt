@@ -18,12 +18,17 @@ fun AppCompatActivity.popBackStack() {
     supportFragmentManager.popBackStack()
 }
 
-fun AppCompatActivity.addFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { add(frameId, fragment, fragment.javaClass.simpleName) }
+fun AppCompatActivity.addFragmentToBackStack(fragment: Fragment, frameId: Int) {
+    supportFragmentManager.inTransaction {
+        add(frameId, fragment, fragment.javaClass.simpleName)
+        .addToBackStack(null)
+    }
 }
 
 fun AppCompatActivity.replaceFragment(fragment: Fragment, frameId: Int) {
-    supportFragmentManager.inTransaction { replace(frameId, fragment, fragment.javaClass.simpleName) }
+    supportFragmentManager.inTransaction {
+        replace(frameId, fragment, fragment.javaClass.simpleName)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")

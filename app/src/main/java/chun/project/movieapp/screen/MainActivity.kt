@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import chun.project.movieapp.R
 import chun.project.movieapp.screen.landing.ui.LandingFragment
+import chun.project.movieapp.util.popBackStack
 import chun.project.movieapp.util.replaceFragment
 
 class MainActivity : AppCompatActivity() {
@@ -12,10 +13,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        setupFragment(LandingFragment.newInstance())
+        val fragment = LandingFragment.newInstance()
+        replaceFragment(fragment, R.id.container)
     }
 
-    fun setupFragment(fragment: Fragment) {
-        replaceFragment(fragment, R.id.container)
+    override fun onBackPressed() {
+        super.onBackPressed()
+        popBackStack()
     }
 }

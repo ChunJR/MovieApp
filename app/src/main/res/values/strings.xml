@@ -15,4 +15,8 @@
     <string name="txt_error">Error</string>
     <string name="txt_cancel">Cancel</string>
     <string name="txt_retry">Retry</string>
+    <string name="txt_ok">OK</string>
+    <string name="collapsing_toolbar">Collapsing Toolbar</string>
+    <string name="txt_movie_poster">Movie Poster</string>
+    <string name="txt_back">Back</string>
 </resources>

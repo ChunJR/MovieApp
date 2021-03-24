@@ -25,6 +25,9 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
     private val _categories = MutableLiveData<List<Genres>>()
     val categories: LiveData<List<Genres>> get() = _categories
 
+    private val _movieDetails = MutableLiveData<MovieModel>()
+    val movieModel: LiveData<MovieModel> get() = _movieDetails
+
     override fun onCleared() {
         super.onCleared()
         disposer.dispose()
@@ -50,8 +53,7 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { movieResponse ->
-                    _state.value = HomeViewState.Success
-                    handleMovieData(movieResponse, _categories)
+                    handleGenresData(movieResponse, _categories)
                 },
                 { error ->
                     error.message?.let {
@@ -61,12 +63,39 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
             ).disposeBy(disposer)
     }
 
-    private fun handleMovieData(
+    fun getMovieDetails(movieId: Int) {
+        movieRepo.getMovieDetails(movieId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe { _state.value = HomeViewState.Loading }
+            .subscribe(
+                { movieResponse ->
+                    _state.value = HomeViewState.Success
+                    handleMovieData(movieResponse, _movieDetails)
+                },
+                { error ->
+                    error.message?.let {
+                        _state.value = HomeViewState.Error(it)
+                    }
+                }
+            ).disposeBy(disposer)
+    }
+
+    private fun handleGenresData(
         movieResponse: MovieModel?,
         _categories: MutableLiveData<List<Genres>>
     ) {
         movieResponse?.let {
             _categories.value = it.genresList
+        }
+    }
+
+    private fun handleMovieData(
+        movieResponse: MovieModel?,
+        _movieDetails: MutableLiveData<MovieModel>
+    ) {
+        movieResponse?.let {
+            _movieDetails.value = it
         }
     }
 
