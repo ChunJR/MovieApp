@@ -2,11 +2,12 @@ package chun.project.movieapp.screen.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import chun.project.movieapp.util.RxImmediateSchedulerRule
+import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.MovieModel
-import chun.project.movieapp.model.MovieResponseModel
 import chun.project.movieapp.repository.MovieRepo
+import chun.project.movieapp.screen.home.ui.HomeViewModel
 import chun.project.movieapp.screen.home.ui.HomeViewState
+import chun.project.movieapp.util.RxImmediateSchedulerRule
 import io.mockk.MockKAnnotations
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -19,7 +20,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class HomeViewModelTest {
+class Test {
     @get:Rule
     var rxRule = RxImmediateSchedulerRule()
 
@@ -33,7 +34,7 @@ class HomeViewModelTest {
     lateinit var stateObserver: Observer<HomeViewState>
 
     @MockK(relaxed = true)
-    lateinit var trendingObserver: Observer<List<MovieModel>>
+    lateinit var categoriesObserver: Observer<List<Genres>>
 
     private lateinit var viewModel: HomeViewModel
 
@@ -43,7 +44,7 @@ class HomeViewModelTest {
         viewModel = HomeViewModel(movileRepo)
 
         viewModel.state.observeForever(stateObserver)
-        viewModel.trending.observeForever(trendingObserver)
+        viewModel.categories.observeForever(categoriesObserver)
     }
 
     @After
@@ -53,27 +54,18 @@ class HomeViewModelTest {
 
     @Test
     fun getTrendingList_success() {
-        val trendingResponse = MovieResponseModel(
-            1,
-            1000,
-            10000,
-            trendingMockData()
-        )
+        val categoriesResponse = categoriesMockData()
 
-        every { movileRepo.getTrendingList() } returns Single.just(trendingResponse)
+        every { movileRepo.getCategories() } returns Single.just(categoriesResponse)
 
-        viewModel.addEvents()
+        viewModel.getCategories()
 
-        assertEquals(viewModel.trending.value, trendingResponse.results)
-        assertEquals(viewModel.trendingPage, trendingResponse.page)
+        assertEquals(viewModel.categories.value, categoriesResponse.genresList)
 
         verifyOrder {
-            movileRepo.getTrendingList()
+            movileRepo.getCategories()
 
-            stateObserver.onChanged(HomeViewState.Loading)
-            stateObserver.onChanged(HomeViewState.Success)
-
-            trendingObserver.onChanged(trendingResponse.results)
+            categoriesObserver.onChanged(categoriesResponse.genresList)
         }
     }
 
@@ -81,25 +73,30 @@ class HomeViewModelTest {
     fun getTrendingList_error() {
         val errorMessage = "no internet"
 
-        every { movileRepo.getTrendingList() } returns Single.error(Throwable(errorMessage))
+        every { movileRepo.getCategories() } returns Single.error(Throwable(errorMessage))
 
-        viewModel.addEvents()
+        viewModel.getCategories()
 
-        assertEquals(viewModel.trending.value, null)
-        assertEquals(viewModel.trendingPage, 1)
+        assertEquals(viewModel.categories.value, null)
 
         verifyOrder {
-            movileRepo.getTrendingList()
-
-            stateObserver.onChanged(HomeViewState.Loading)
+            movileRepo.getCategories()
             stateObserver.onChanged(HomeViewState.Error(errorMessage))
         }
     }
 
-    private fun trendingMockData(): List<MovieModel> {
-        return arrayListOf(
-            MovieModel(1, "abc", "/fsafsa", "/fhsaufhsa"),
-            MovieModel(2, "xyz", "/xyz", "/xyz")
+    private fun categoriesMockData(): MovieModel {
+        return MovieModel(
+            12345,
+            "Justin League",
+            "Long time ago...",
+            "/poster_path",
+            "/backdrop_path",
+            "2000-30-12",
+            8f,
+            arrayListOf(
+                Genres(2421, "action")
+            ),
         )
     }
 

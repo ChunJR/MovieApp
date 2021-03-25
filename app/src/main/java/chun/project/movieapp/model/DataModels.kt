@@ -11,36 +11,36 @@ data class HomeDataV2(val viewType: Int,
 
 @Parcelize
 data class ConfigResponseModel(
-    @SerializedName("base_url") var base_url: String?,
-    @SerializedName("secure_base_url") var secure_base_url: String?,
-    @SerializedName("backdrop_sizes") var backdrop_sizes: List<String>?,
-    @SerializedName("poster_sizes") var poster_sizes: List<String>?,
+    @SerializedName("base_url") var base_url: String? = null,
+    @SerializedName("secure_base_url") var secure_base_url: String? = null,
+    @SerializedName("backdrop_sizes") var backdrop_sizes: List<String>? = null,
+    @SerializedName("poster_sizes") var poster_sizes: List<String>? = null,
 ) : Parcelable
 
 @Parcelize
 data class MovieResponseModel(
-    @SerializedName("page") var page: Int,
-    @SerializedName("total_pages") var total_pages: Int,
-    @SerializedName("total_results") var total_results: Int,
-    @SerializedName("results") var results: List<MovieModel>,
+    @SerializedName("page") var page: Int = -1,
+    @SerializedName("total_pages") var total_pages: Int = -1,
+    @SerializedName("total_results") var total_results: Int = -1,
+    @SerializedName("results") var results: List<MovieModel>? = null,
 ) : Parcelable
 
 @Parcelize
 data class MovieModel(
-    @SerializedName("id") var id: Int,
-    @SerializedName("title") var title: String,
-    @SerializedName("overview") var overview: String,
-    @SerializedName("poster_path") var poster_path: String,
-    @SerializedName("backdrop_path") var backdrop_path: String,
-    @SerializedName("release_date") var release_date: String,
-    @SerializedName("vote_average") var rating: Float,
-    @SerializedName("genres") var genresList: List<Genres>,
+    @SerializedName("id") var id: Int = -1,
+    @SerializedName("title") var title: String? = null,
+    @SerializedName("overview") var overview: String? = null,
+    @SerializedName("poster_path") var poster_path: String? = null,
+    @SerializedName("backdrop_path") var backdrop_path: String? = null,
+    @SerializedName("release_date") var release_date: String? = null,
+    @SerializedName("vote_average") var rating: Float = -1f,
+    @SerializedName("genres") var genresList: List<Genres>? = null,
 ) : Parcelable
 
 @Parcelize
 data class Genres(
-    @SerializedName("id") var id: Int,
-    @SerializedName("name") var name: String
+    @SerializedName("id") var id: Int = -1,
+    @SerializedName("name") var name: String? = null
 ) : Parcelable
 
 

@@ -31,11 +31,15 @@ class TrendingPagingSource(
     }
 
     private fun toLoadResult(data: MovieResponseModel, page: Int): LoadResult<Int, MovieModel> {
-        return LoadResult.Page(
-            data = data.results,
-            prevKey = if (page == 1) null else page - 1,
-            nextKey = if (page == data.total_pages) null else page + 1
-        )
+        data.results?.let {
+            return LoadResult.Page(
+                data = it,
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = if (page == data.total_pages) null else page + 1
+            )
+        } ?: run {
+            return LoadResult.Error(Throwable("Invalid data"))
+        }
     }
 
     override fun getRefreshKey(state: PagingState<Int, MovieModel>): Int? {
