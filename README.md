@@ -12,7 +12,7 @@ There are 2 main screen to showing multiple movie list and the movie details.
 - Details screen: 
   - Display movie information.
   - Play trailer (coming soon).
-  - Rate movie (conming soon).
+  - Rate movie (coming soon).
   - Comment (coming soon).
 
 ## Technical
