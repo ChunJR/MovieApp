@@ -1,128 +1,94 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules
-buildscript {
-    ext {
-        //Test PR 2
-        compileSdkVersion = 29
-        minSdkVersion = 21
-        targetSdkVersion = 29
-        gradleVersion = '4.1.3'
-        kotlinVersion = "1.4.21"
-
-        def androidxTestVersion = "1.2.0"
-        def appCompatVersion = '1.2.0'
-        def constraintlayoutVersion = "2.0.1"
-        def coreKtxVersion = "1.3.1"
-        def fragmentVersion = "1.2.5"
-        def glideVersion = '4.11.0'
-        def gsonVersion = '2.8.6'
-        def junitVersion = "4.13"
-        def lifecycleVersion = '2.2.0'
-        def liveDataVersion = "2.2.0-rc02"
-        def materialVersion = '1.2.1'
-        def mockKVersion = '1.10.0'
-        def mockitoCoreVersion = '3.3.3'
-        def okhttpLoggingVersion = '4.8.1'
-        def retrofitVersion = "2.9.0"
-        def recyclerViewVersion = "1.1.0"
-        def testExtJunit = '1.1.2'
-        def coreTestingVersion = '2.1.0'
-        def workVersion = '2.4.0'
-        def koin_version = "2.2.1"
-        def rxjava_version = '2.2.13'
-        def rxandroid_version = '2.1.1'
-        def diposer_version = '2.0.0'
-        def paging_version = "3.0.0-beta02"
-
-        libraries = [
-                // Kotlin standard library
-                "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion",
-
-                // Android UI and AppCompat
-                "androidx.core:core-ktx:$coreKtxVersion",
-                "androidx.appcompat:appcompat:$appCompatVersion",
-                "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
-                "com.google.android.material:material:$materialVersion",
-                "androidx.fragment:fragment-ktx:$fragmentVersion",
-                "androidx.recyclerview:recyclerview:$recyclerViewVersion",
-                "androidx.swiperefreshlayout:swiperefreshlayout:$recyclerViewVersion",
-                "com.github.bumptech.glide:glide:$glideVersion",
-
-                // ViewModel and LiveData
-                "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
-                "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion",
-                "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
-
-                "androidx.work:work-runtime-ktx:$workVersion",
-
-                // Network and Serialization
-                "com.google.code.gson:gson:$gsonVersion",
-                "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion",
-                "com.squareup.retrofit2:retrofit:$retrofitVersion",
-                "com.squareup.retrofit2:converter-gson:$retrofitVersion",
-                "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
-
-                // DI: Koin
-                "org.koin:koin-androidx-ext:$koin_version",
-
-                // Rx
-                "io.reactivex.rxjava2:rxjava:$rxjava_version",
-                "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
-
-                // Disposer
-                "io.sellmair:disposer:$diposer_version",
-
-                // Paging 3
-                "androidx.paging:paging-runtime:$paging_version",
-                // optional - RxJava2 support
-                "androidx.paging:paging-rxjava2-ktx:$paging_version",
-        ]
-
-        testLibraries = [
-                "junit:junit:$junitVersion",
-
-                // mocks
-                "org.mockito:mockito-core:$mockitoCoreVersion",
-                "io.mockk:mockk:$mockKVersion",
-
-                //  Architecture Components testing libraries
-                "androidx.arch.core:core-testing:$coreTestingVersion",
-        ]
-
-        androidTestLibraries = [
-                "junit:junit:$junitVersion",
-                "androidx.test:runner:$androidxTestVersion",
-                "androidx.test:rules:$androidxTestVersion",
-                "androidx.test.ext:junit:$testExtJunit",
-
-                //  Architecture Components testing libraries
-                "androidx.arch.core:core-testing:$coreTestingVersion",
-                "androidx.work:work-testing:$workVersion",
-        ]
-    }
-
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath "com.android.tools.build:gradle:$gradleVersion"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '8.0.0' apply false
+    id 'com.android.library' version '8.0.0' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
 }
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven {
-            url "http://dl.bintray.com/kotlin/kotlin-eap"
-        }
-    }
-}
+ext {
+    def androidxTestVersion = "1.2.0"
+    def appCompatVersion = '1.2.0'
+    def constraintlayoutVersion = "2.0.1"
+    def coreKtxVersion = "1.3.1"
+    def fragmentVersion = "1.2.5"
+    def glideVersion = '4.11.0'
+    def gsonVersion = '2.8.6'
+    def junitVersion = "4.13"
+    def lifecycleVersion = '2.2.0'
+    def liveDataVersion = "2.2.0-rc02"
+    def materialVersion = '1.2.1'
+    def mockKVersion = '1.10.0'
+    def mockitoCoreVersion = '3.3.3'
+    def okhttpLoggingVersion = '4.8.1'
+    def retrofitVersion = "2.9.0"
+    def recyclerViewVersion = "1.1.0"
+    def testExtJunit = '1.1.2'
+    def coreTestingVersion = '2.1.0'
+    def workVersion = '2.7.1'
+    def koin_version = "2.2.1"
+    def rxjava_version = '2.2.13'
+    def rxandroid_version = '2.1.1'
+    def diposer_version = '2.0.0'
+    def paging_version = "3.0.0-beta02"
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    libraries = [
+
+            // Android UI and AppCompat
+            "androidx.core:core-ktx:$coreKtxVersion",
+            "androidx.appcompat:appcompat:$appCompatVersion",
+            "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
+            "com.google.android.material:material:$materialVersion",
+            "androidx.fragment:fragment-ktx:$fragmentVersion",
+            "androidx.recyclerview:recyclerview:$recyclerViewVersion",
+            "androidx.swiperefreshlayout:swiperefreshlayout:$recyclerViewVersion",
+            "com.github.bumptech.glide:glide:$glideVersion",
+
+            // ViewModel and LiveData
+            "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+            "androidx.lifecycle:lifecycle-livedata-ktx:$liveDataVersion",
+            "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+
+            "androidx.work:work-runtime-ktx:$workVersion",
+
+            // Network and Serialization
+            "com.google.code.gson:gson:$gsonVersion",
+            "com.squareup.okhttp3:logging-interceptor:$okhttpLoggingVersion",
+            "com.squareup.retrofit2:retrofit:$retrofitVersion",
+            "com.squareup.retrofit2:converter-gson:$retrofitVersion",
+            "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
+
+            // DI: Koin
+            "io.insert-koin:koin-android:3.3.2",
+
+            // Rx
+            "io.reactivex.rxjava2:rxjava:$rxjava_version",
+            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
+
+            // Paging 3
+            "androidx.paging:paging-runtime:$paging_version",
+            // optional - RxJava2 support
+            "androidx.paging:paging-rxjava2-ktx:$paging_version",
+    ]
+
+    testLibraries = [
+            "junit:junit:$junitVersion",
+
+            // mocks
+            "org.mockito:mockito-core:$mockitoCoreVersion",
+            "io.mockk:mockk:$mockKVersion",
+
+            //  Architecture Components testing libraries
+            "androidx.arch.core:core-testing:$coreTestingVersion",
+    ]
+
+    androidTestLibraries = [
+            "junit:junit:$junitVersion",
+            "androidx.test:runner:$androidxTestVersion",
+            "androidx.test:rules:$androidxTestVersion",
+            "androidx.test.ext:junit:$testExtJunit",
+
+            //  Architecture Components testing libraries
+            "androidx.arch.core:core-testing:$coreTestingVersion",
+            "androidx.work:work-testing:$workVersion",
+    ]
 }

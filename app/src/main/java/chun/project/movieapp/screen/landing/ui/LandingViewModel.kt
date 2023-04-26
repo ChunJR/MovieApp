@@ -6,13 +6,12 @@ import androidx.lifecycle.ViewModel
 import chun.project.movieapp.model.ConfigResponseModel
 import chun.project.movieapp.repository.MovieRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.sellmair.disposer.Disposer
-import io.sellmair.disposer.disposeBy
 
 class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
 
-    private val disposer = Disposer()
+    private val compositeDisposable = CompositeDisposable()
 
     private val _state = MutableLiveData<LandingViewState>()
     val state: LiveData<LandingViewState> get() = _state
@@ -22,11 +21,11 @@ class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        disposer.dispose()
+        compositeDisposable.clear()
     }
 
     fun getConfiguration() {
-        movieRepo.getConfiguration()
+        compositeDisposable.add(movieRepo.getConfiguration()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _state.value = LandingViewState.Loading }
@@ -39,11 +38,10 @@ class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
                     error.message?.let {
                         _state.value = LandingViewState.Error(it)
                     }
-                })
-            .disposeBy(disposer)
+                }))
     }
 
     private fun handleData(configResponse: ConfigResponseModel?) {
-        _config.value = configResponse
+        _config.value = configResponse!!
     }
 }

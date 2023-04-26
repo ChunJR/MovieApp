@@ -7,21 +7,21 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import chun.project.movieapp.R
+import chun.project.movieapp.databinding.ViewholderTrendingBinding
 import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
 import chun.project.movieapp.screen.home.adapter.TrendingAdapter
-import kotlinx.android.synthetic.main.viewholder_trending.view.*
 
 class TrendingViewHolder(
     private val context: Context,
-    private val view: View,
+    private val binding: ViewholderTrendingBinding,
     private val listener: HomeListener,
     private val lifecycle: Lifecycle
-) : HomeAdapter.HomeViewModelV2<List<MovieModel>>(view) {
+) : HomeAdapter.HomeViewModelV2<List<MovieModel>>(binding.root) {
 
-    private val recyclerView = view.recyclerView
+    private val recyclerView = binding.recyclerView
 
     private var adapter: TrendingAdapter? = null
 
@@ -40,7 +40,7 @@ class TrendingViewHolder(
                 ?: loadState.prepend as? LoadState.Error
 
             errorState?.let {
-                androidx.appcompat.app.AlertDialog.Builder(view.context)
+                androidx.appcompat.app.AlertDialog.Builder(context)
                     .setTitle(R.string.txt_error)
                     .setMessage(it.error.localizedMessage)
                     .setNegativeButton(R.string.txt_cancel) { dialog, _ ->

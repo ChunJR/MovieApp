@@ -11,13 +11,12 @@ import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.repository.MovieRepo
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import io.sellmair.disposer.Disposer
-import io.sellmair.disposer.disposeBy
 
 class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
 
-    private val disposer = Disposer()
+    private val compositeDisposable = CompositeDisposable()
 
     private val _state = MutableLiveData<HomeViewState>()
     val state: LiveData<HomeViewState> get() = _state
@@ -30,25 +29,25 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        disposer.dispose()
+        compositeDisposable.clear()
     }
 
     fun getTrendingMovies(): Flowable<PagingData<MovieModel>> {
         return movieRepo
             .getTrendingMovies()
             .cachedIn(viewModelScope)
-            .disposeBy(disposer)
+//            .disposeBy(disposer)
     }
 
     fun getMovies(type: String): Flowable<PagingData<MovieModel>> {
         return movieRepo
             .getMovies(type)
             .cachedIn(viewModelScope)
-            .disposeBy(disposer)
+//            .disposeBy(disposer)
     }
 
     fun getCategories() {
-        movieRepo.getCategories()
+        compositeDisposable.add(movieRepo.getCategories()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -60,11 +59,11 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
                         _state.value = HomeViewState.Error(it)
                     }
                 }
-            ).disposeBy(disposer)
+            ))
     }
 
     fun getMovieDetails(movieId: Int) {
-        movieRepo.getMovieDetails(movieId)
+        compositeDisposable.add(movieRepo.getMovieDetails(movieId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _state.value = HomeViewState.Loading }
@@ -78,7 +77,7 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
                         _state.value = HomeViewState.Error(it)
                     }
                 }
-            ).disposeBy(disposer)
+            ))
     }
 
     private fun handleGenresData(
@@ -86,7 +85,7 @@ class HomeViewModel(private val movieRepo: MovieRepo) : ViewModel() {
         _categories: MutableLiveData<List<Genres>>
     ) {
         movieResponse?.let {
-            _categories.value = it.genresList
+            _categories.value = it.genresList!!
         }
     }
 

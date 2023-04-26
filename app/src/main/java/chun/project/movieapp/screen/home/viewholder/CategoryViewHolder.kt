@@ -5,21 +5,21 @@ import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import chun.project.movieapp.databinding.ViewholderCategoryBinding
 import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.MovieModel
 import chun.project.movieapp.screen.home.`interface`.HomeListener
 import chun.project.movieapp.screen.home.adapter.CategoryAdapter
 import chun.project.movieapp.screen.home.adapter.HomeAdapter
-import kotlinx.android.synthetic.main.viewholder_trending.view.*
 
 class CategoryViewHolder(
     private val context: Context,
-    private val view: View,
+    private val binding: ViewholderCategoryBinding,
     private val listener: HomeListener,
     private val lifecycle: Lifecycle
-) : HomeAdapter.HomeViewModelV2<List<MovieModel>>(view) {
+) : HomeAdapter.HomeViewModelV2<List<MovieModel>>(binding.root) {
 
-    private val recyclerView = view.recyclerView
+    private val recyclerView = binding.recyclerView
     private var adapter: CategoryAdapter? = null
 
     override fun bind(viewType: Int, data: Pair<PagingData<MovieModel>, List<Genres>>) {

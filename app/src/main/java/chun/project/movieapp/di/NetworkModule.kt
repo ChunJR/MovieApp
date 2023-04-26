@@ -1,10 +1,10 @@
 package chun.project.movieapp.di
 
-import chun.project.movieapp.BuildConfig
 import chun.project.movieapp.repository.MovieService
 import chun.project.movieapp.util.Constant
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.BuildConfig
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit

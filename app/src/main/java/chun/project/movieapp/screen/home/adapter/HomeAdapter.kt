@@ -7,6 +7,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.RecyclerView
 import chun.project.movieapp.R
+import chun.project.movieapp.databinding.ItemCategoryBinding
+import chun.project.movieapp.databinding.ViewholderCategoryBinding
+import chun.project.movieapp.databinding.ViewholderMovieBinding
+import chun.project.movieapp.databinding.ViewholderTrendingBinding
 import chun.project.movieapp.model.Genres
 import chun.project.movieapp.model.HomeDataV2
 import chun.project.movieapp.model.MovieModel
@@ -53,19 +57,16 @@ class HomeAdapter(private val lifecycle: Lifecycle, private val listener: HomeLi
         val context = parent.context
         return when (viewType) {
             TYPE_TRENDING -> {
-                val view = LayoutInflater.from(context)
-                    .inflate(R.layout.viewholder_trending, parent, false)
-                TrendingViewHolder(context, view, listener, lifecycle)
+                val binding = ViewholderTrendingBinding.inflate(LayoutInflater.from(context), parent, false)
+                TrendingViewHolder(context, binding, listener, lifecycle)
             }
             TYPE_CATEGORY -> {
-                val view = LayoutInflater.from(context)
-                    .inflate(R.layout.viewholder_category, parent, false)
-                CategoryViewHolder(context, view, listener, lifecycle)
+                val binding = ViewholderCategoryBinding.inflate(LayoutInflater.from(context), parent, false)
+                CategoryViewHolder(context, binding, listener, lifecycle)
             }
             TYPE_MOVIE -> {
-                val view =
-                    LayoutInflater.from(context).inflate(R.layout.viewholder_movie, parent, false)
-                MovieViewHolder(context, view, listener, lifecycle)
+                val binding = ViewholderMovieBinding.inflate(LayoutInflater.from(context), parent, false)
+                MovieViewHolder(context, binding, listener, lifecycle)
             }
             else -> throw IllegalArgumentException("Invalid view type")
         }
