@@ -63,11 +63,12 @@ class HomeFragment : Fragment(), HomeListener {
     }
 
     private fun observeDataChange() {
-        viewModel.state.observe(viewLifecycleOwner, {
+        viewModel.state.observe(viewLifecycleOwner) {
             when (it) {
                 is HomeViewState.Loading -> {
                     showLoading()
                 }
+
                 is HomeViewState.Error -> {
                     hideLoading()
                     AlertDialog.Builder(requireContext())
@@ -78,24 +79,25 @@ class HomeFragment : Fragment(), HomeListener {
                         }
                         .show()
                 }
+
                 else -> {
                     hideLoading()
                 }
             }
-        })
-        viewModel.categories.observe(viewLifecycleOwner, {
+        }
+        viewModel.categories.observe(viewLifecycleOwner) {
             if (binding?.swipeRefresh?.isRefreshing == true) {
                 binding?.swipeRefresh?.isRefreshing = false
             }
             homeAdapter.updateCategories(POSITION_CATEGORY, it)
-        })
-        viewModel.movieModel.observe(viewLifecycleOwner, { movie ->
+        }
+        viewModel.movieModel.observe(viewLifecycleOwner) { movie ->
             val detailsFragment = MovieDetailsFragment.newInstance(movie)
             (requireActivity() as MainActivity).addFragmentToBackStack(
                 detailsFragment,
                 R.id.container
             )
-        })
+        }
     }
 
     @SuppressLint("CheckResult")
