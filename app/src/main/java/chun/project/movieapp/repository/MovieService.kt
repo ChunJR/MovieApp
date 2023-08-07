@@ -10,7 +10,7 @@ import retrofit2.http.Query
 interface MovieService {
 
     @GET("configuration")
-    suspend fun getConfiguration(@Query("api_key") apiKey: String): ConfigResponseModel
+    suspend fun getConfiguration(@Query("api_key") apiKey: String): ResponseBody
 
     @GET("trending/{media_type}/{time_window}")
     fun getTrendingList(@Path("media_type") mediaType: String,

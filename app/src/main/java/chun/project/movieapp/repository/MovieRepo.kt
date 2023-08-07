@@ -19,7 +19,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 
 interface MovieRepo {
-    suspend fun getConfiguration(): ConfigResponseModel
+    suspend fun getConfiguration(): ConfigResponseModel?
     fun getCategories(): Single<MovieModel>
     fun getMovieDetails(movieId: Int): Single<MovieModel>
     fun getTrendingMovies(): Flowable<PagingData<MovieModel>>
@@ -27,7 +27,14 @@ interface MovieRepo {
 }
 
 class MovieRepoImpl(private val service: MovieService) : MovieRepo {
-    override suspend fun getConfiguration() = service.getConfiguration(Constant.API_KEY)
+    override suspend fun getConfiguration(): ConfigResponseModel? {
+
+        // Move the execution of the coroutine to the I/O dispatcher
+        return withContext(Dispatchers.IO) {
+            // Blocking network request code
+            MovieServiceFun.parseConfig(service.getConfiguration(Constant.API_KEY))
+        }
+    }
 
     override fun getCategories(): Single<MovieModel> {
         return service.getCategories(Constant.API_KEY)

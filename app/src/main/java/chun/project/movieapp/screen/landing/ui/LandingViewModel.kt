@@ -31,7 +31,11 @@ class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
         emit(Resource.loading(data = null))
         try {
             val data = movieRepo.getConfiguration()
-            emit(Resource.success(data = data))
+            data?.let {
+                emit(Resource.success(data = it))
+            } ?: run {
+                emit(Resource.error(data = null, "data null!"))
+            }
         } catch (exception: Exception) {
             emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
