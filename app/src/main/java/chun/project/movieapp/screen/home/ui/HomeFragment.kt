@@ -21,11 +21,13 @@ import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_
 import chun.project.movieapp.screen.home.adapter.HomeAdapter.Companion.POSITION_UPCOMING
 import chun.project.movieapp.screen.movie_details.ui.MovieDetailsFragment
 import chun.project.movieapp.util.addFragmentToBackStack
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), HomeListener {
 
-    private val viewModel: HomeViewModel by viewModel()
+    @Inject lateinit var viewModel: HomeViewModel
     private var binding: FragmentHomeBinding? = null
 
     private lateinit var homeAdapter: HomeAdapter

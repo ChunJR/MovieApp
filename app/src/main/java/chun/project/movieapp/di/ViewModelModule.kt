@@ -1,12 +1,12 @@
-package chun.project.movieapp.di
-
-import chun.project.movieapp.screen.home.ui.HomeViewModel
-import chun.project.movieapp.screen.landing.ui.LandingViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
-
-val viewModelModule = module {
-    viewModel { HomeViewModel(get()) }
-//    viewModel { HomeViewModelV2(get()) }
-    viewModel { LandingViewModel(get()) }
-}
+//package chun.project.movieapp.di
+//
+//import chun.project.movieapp.screen.home.ui.HomeViewModel
+//import chun.project.movieapp.screen.landing.ui.LandingViewModel
+//import org.koin.androidx.viewmodel.dsl.viewModel
+//import org.koin.dsl.module
+//
+//val viewModelModule = module {
+//    viewModel { HomeViewModel(get()) }
+////    viewModel { HomeViewModelV2(get()) }
+//    viewModel { LandingViewModel(get()) }
+//}

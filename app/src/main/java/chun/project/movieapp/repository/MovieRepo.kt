@@ -12,9 +12,25 @@ import chun.project.movieapp.repository.paging.TrendingPagingSource
 import chun.project.movieapp.util.Constant
 import com.google.gson.Gson
 import com.google.gson.JsonParser
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import io.reactivex.Flowable
 import io.reactivex.Single
 import okhttp3.ResponseBody
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Module
+@InstallIn(ActivityComponent::class)
+abstract class MovieModule {
+
+    @Binds
+    abstract fun bindMovieService(
+        movieServiceImpl: MovieRepoImpl
+    ): MovieService
+}
 
 interface MovieRepo {
     fun getConfiguration(): Single<ConfigResponseModel>
@@ -24,7 +40,9 @@ interface MovieRepo {
     fun getMovies(type: String): Flowable<PagingData<MovieModel>>
 }
 
-class MovieRepoImpl(private val service: MovieService) : MovieRepo {
+// Constructor-injected, because Hilt needs to know how to
+// provide instances of MovieRepoImpl, too.
+class MovieRepoImpl @Inject constructor(private val service: MovieService) : MovieService  {
     override fun getConfiguration(): Single<ConfigResponseModel> {
         return service.getConfiguration(Constant.API_KEY)
             .map { responseBody ->

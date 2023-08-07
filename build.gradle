@@ -3,6 +3,7 @@ plugins {
     id 'com.android.application' version '8.0.0' apply false
     id 'com.android.library' version '8.0.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.0' apply false
+    id 'com.google.dagger.hilt.android' version '2.44' apply false
 }
 
 ext {
@@ -58,7 +59,7 @@ ext {
             "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion",
 
             // DI: Koin
-            "io.insert-koin:koin-android:3.3.2",
+//            "io.insert-koin:koin-android:3.3.2",
 
             // Rx
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
