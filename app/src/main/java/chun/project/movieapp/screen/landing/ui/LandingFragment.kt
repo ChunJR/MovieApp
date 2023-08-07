@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import chun.project.movieapp.R
 import chun.project.movieapp.databinding.FragmentLandingBinding
 import chun.project.movieapp.model.ConfigResponseModel
@@ -33,33 +34,37 @@ class LandingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeDataChange()
-        viewModel.getConfiguration()
     }
 
     private fun observeDataChange() {
-        viewModel.state.observe(viewLifecycleOwner, {
-            when (it) {
-                is LandingViewState.Error -> {
-                    AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.txt_error)
-                        .setMessage(it.message)
-                        .setPositiveButton(R.string.txt_retry) { dialog, _ ->
-                            viewModel.getConfiguration()
-                            dialog.dismiss()
+        viewModel.getConfiguration().observe(viewLifecycleOwner, Observer {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        resource.data?.let { configResponse ->
+                            handleData(configResponse)
                         }
-                        .show()
-                }
-                else -> {
+                    }
+                    Status.ERROR -> {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle(R.string.txt_error)
+                            .setMessage(it.message)
+                            .setPositiveButton(R.string.txt_retry) { dialog, _ ->
+                                observeDataChange()
+                                dialog.dismiss()
+                            }
+                            .show()
+                    }
+                    Status.LOADING -> {
+
+                    }
                 }
             }
         })
-        viewModel.config.observe(viewLifecycleOwner, { configResponse ->
-            val widthOfScreen = getWidthMetrics()
-            handleData(configResponse, widthOfScreen)
-        })
     }
 
-    private fun handleData(configResponse: ConfigResponseModel?, widthOfScreen: Int) {
+    private fun handleData(configResponse: ConfigResponseModel?) {
+        val widthOfScreen = getWidthMetrics()
         configResponse?.let { config ->
             if (config.base_url?.isNotEmpty() == true) {
                 requireContext().myAppPreferences[Constant.SHARED_PREFERENCE_IMAGE_URL] =

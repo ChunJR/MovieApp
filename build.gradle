@@ -64,6 +64,9 @@ ext {
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
 
+            //Coroutine
+            'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9',
+
             // Paging 3
             "androidx.paging:paging-runtime:$paging_version",
             // optional - RxJava2 support

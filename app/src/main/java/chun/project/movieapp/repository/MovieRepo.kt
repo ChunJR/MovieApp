@@ -14,10 +14,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonParser
 import io.reactivex.Flowable
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 
 interface MovieRepo {
-    fun getConfiguration(): Single<ConfigResponseModel>
+    suspend fun getConfiguration(): ConfigResponseModel
     fun getCategories(): Single<MovieModel>
     fun getMovieDetails(movieId: Int): Single<MovieModel>
     fun getTrendingMovies(): Flowable<PagingData<MovieModel>>
@@ -25,12 +27,7 @@ interface MovieRepo {
 }
 
 class MovieRepoImpl(private val service: MovieService) : MovieRepo {
-    override fun getConfiguration(): Single<ConfigResponseModel> {
-        return service.getConfiguration(Constant.API_KEY)
-            .map { responseBody ->
-                MovieServiceFun.parseConfig(responseBody)
-            }
-    }
+    override suspend fun getConfiguration() = service.getConfiguration(Constant.API_KEY)
 
     override fun getCategories(): Single<MovieModel> {
         return service.getCategories(Constant.API_KEY)

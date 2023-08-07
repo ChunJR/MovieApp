@@ -3,11 +3,14 @@ package chun.project.movieapp.screen.landing.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import chun.project.movieapp.model.ConfigResponseModel
 import chun.project.movieapp.repository.MovieRepo
-import io.reactivex.android.schedulers.AndroidSchedulers
+import chun.project.movieapp.util.Resource
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
 class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
 
@@ -24,21 +27,14 @@ class LandingViewModel(private val movieRepo: MovieRepo): ViewModel() {
         compositeDisposable.clear()
     }
 
-    fun getConfiguration() {
-        compositeDisposable.add(movieRepo.getConfiguration()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { _state.value = LandingViewState.Loading }
-            .subscribe(
-                { configResponse ->
-                    _state.value = LandingViewState.Success
-                    handleData(configResponse)
-                },
-                { error ->
-                    error.message?.let {
-                        _state.value = LandingViewState.Error(it)
-                    }
-                }))
+    fun getConfiguration() = liveData(Dispatchers.IO) {
+        emit(Resource.loading(data = null))
+        try {
+            val data = movieRepo.getConfiguration()
+            emit(Resource.success(data = data))
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
+        }
     }
 
     private fun handleData(configResponse: ConfigResponseModel?) {

@@ -1,5 +1,6 @@
 package chun.project.movieapp.repository
 
+import chun.project.movieapp.model.ConfigResponseModel
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -9,7 +10,7 @@ import retrofit2.http.Query
 interface MovieService {
 
     @GET("configuration")
-    fun getConfiguration(@Query("api_key") apiKey: String): Single<ResponseBody>
+    suspend fun getConfiguration(@Query("api_key") apiKey: String): ConfigResponseModel
 
     @GET("trending/{media_type}/{time_window}")
     fun getTrendingList(@Path("media_type") mediaType: String,
